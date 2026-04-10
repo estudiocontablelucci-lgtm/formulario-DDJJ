@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuestionario DDJJ — Lucci & Asociados</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --dark:    #0D1117;
+    --dark2:   #162032;
+    --dark3:   #1a2940;
+    --mid:     #3E3E42;
+    --border:  rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --muted:   #8A8A82;
+    --light:   #EEEEE8;
+    --white:   #EEEEE8;
+    --accent:  #00C896;
+    --danger:  #c0392b;
+    --success: #00C896;
+    --radius:  6px;
+    --serif:   'Cormorant Garamond', Georgia, serif;
+    --sans:    'DM Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--light);
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ─────────────────────────────────────── */
+  .site-header {
+    background: var(--dark2);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .site-header img {
+    height: 48px;
+    width: 48px;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  .header-text h1 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: .04em;
+  }
+  .header-text p {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  /* ── PROGRESS ───────────────────────────────────── */
+  .progress-wrap {
+    background: var(--dark2);
+    border-bottom: 1px solid var(--border);
+    padding: .6rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .progress-bar-outer {
+    flex: 1;
+    height: 3px;
+    background: var(--dark3);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    transition: width .4s ease;
+    width: 0%;
+  }
+  .progress-label { min-width: 60px; text-align: right; }
+
+  /* ── LAYOUT ─────────────────────────────────────── */
+  .form-shell {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+
+  /* ── INTRO ──────────────────────────────────────── */
+  .intro-box {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2.5rem;
+    background: var(--dark2);
+  }
+  .intro-box h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: .4rem;
+  }
+  .intro-box p { color: var(--muted); font-size: 13px; }
+
+  /* ── SECCIONES ──────────────────────────────────── */
+  .section {
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .section-head {
+    background: var(--dark2);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    gap: 1rem;
+  }
+  .section-head:hover { background: var(--dark3); }
+  .section-title-wrap { display: flex; align-items: center; gap: .75rem; }
+  .section-letter {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--muted);
+    width: 22px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--white);
+  }
+  .section-badge {
+    font-size: 10px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 99px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .section-toggle {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform .25s;
+    flex-shrink: 0;
+  }
+  .section-toggle.open { transform: rotate(180deg); }
+  .section-body {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .section-body.hidden { display: none; }
+
+  /* ── CAMPOS ─────────────────────────────────────── */
+  .field { display: flex; flex-direction: column; gap: .4rem; }
+  .field label {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--light);
+    line-height: 1.4;
+  }
+  .field .hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: -2px;
+  }
+  .field input[type=text],
+  .field input[type=email],
+  .field textarea,
+  .field select {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--light);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 300;
+    padding: .6rem .9rem;
+    width: 100%;
+    outline: none;
+    transition: border-color .2s;
+    -webkit-appearance: none;
+  }
+  .field input[type=text]:focus,
+  .field input[type=email]:focus,
+  .field textarea:focus,
+  .field select:focus { border-color: var(--accent); }
+  .field textarea { resize: vertical; min-height: 72px; }
+  .field select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7f8e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .75rem center; padding-right: 2rem; }
+
+  /* Radio / Checkbox */
+  .radio-group, .check-group { display: flex; flex-direction: column; gap: .45rem; }
+  .radio-group.inline, .check-group.inline { flex-direction: row; flex-wrap: wrap; gap: .5rem; }
+  .radio-option, .check-option {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--light);
+    padding: .5rem .8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--dark3);
+    transition: border-color .2s, background .2s;
+    line-height: 1.3;
+  }
+  .radio-option:hover, .check-option:hover { border-color: var(--muted); }
+  .radio-option input, .check-option input { accent-color: var(--accent); width: 15px; height: 15px; flex-shrink: 0; }  .radio-option.selected, .check-option.selected { border-color: var(--accent); }
+
+  /* Grid campos */
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media(max-width:520px) { .field-grid { grid-template-columns: 1fr; } }
+
+  /* Sub-sección */
+  .sub-section {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .sub-title {
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: .4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Condicional oculto */
+  .conditional { display: none; }
+  .conditional.visible { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  /* ── NOTA / ALERTA ──────────────────────────────── */
+  .nota {
+    background: var(--dark3);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: .7rem 1rem;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── BOTONES ─────────────────────────────────────── */
+  .btn-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: .7rem 1.5rem;
+    border-radius: var(--radius);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    transition: all .2s;
+    letter-spacing: .03em;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--dark);
+    border-color: var(--accent);
+  }
+  .btn-primary:hover { background: #00b087; border-color: #00b087; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+  }
+  .btn-secondary:hover { background: var(--dark3); color: var(--light); }
+
+  /* ── TOAST ──────────────────────────────────────── */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: .75rem 1.25rem;
+    font-size: 13px;
+    color: var(--light);
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all .3s;
+    max-width: 280px;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { border-color: var(--accent); color: var(--accent); }
+  .toast.error { border-color: var(--danger); color: var(--danger); }
+
+  /* ── AUTOSAVE INDICATOR ─────────────────────────── */
+  .autosave {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    margin-top: -.5rem;
+    margin-bottom: .5rem;
+    height: 16px;
+  }
+
+  /* ── FIRMA FINAL ────────────────────────────────── */
+  .firma-box {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    background: var(--dark2);
+    margin-top: 2rem;
+  }
+  .firma-box p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .firma-box .firma-line {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .firma-campo { flex: 1; min-width: 160px; }
+  .firma-campo label { font-size: 11px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; display: block; margin-bottom: .3rem; }
+  .firma-campo input { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; color: var(--light); width: 100%; padding: .3rem 0; font-family: var(--sans); font-size: 13px; outline: none; }
+
+  @media (max-width: 600px) {
+    .site-header { padding: 1rem; }
+    .form-shell { padding: 1.5rem 1rem 4rem; }
+    .section-body { padding: 1rem; }
+    .btn-row { flex-direction: column; }
+    .btn { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <img src="data:image/jpeg;base64,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" alt="Lucci & Asociados">
+  <div class="header-text">
+    <h1>Lucci & Asociados</h1>
+    <p>Cuestionario DDJJ — Ejercicios 2022 · 2023 · 2024</p>
+  </div>
+</header>
+
+<!-- PROGRESO -->
+<div class="progress-wrap">
+  <div class="progress-bar-outer">
+    <div class="progress-bar-inner" id="progressBar"></div>
+  </div>
+  <span class="progress-label" id="progressLabel">0 %</span>
+</div>
+
+<!-- FORMULARIO -->
+<div class="form-shell">
+
+  <div class="intro-box">
+    <h2>Declaraciones juradas de Bienes Personales y Ganancias</h2>
+    <p>Completá la información correspondiente a los ejercicios indicados. Podés guardar el progreso y retomar en otro momento desde el mismo dispositivo. Ante cualquier duda, dejá el campo en blanco y lo coordinamos.</p>
+  </div>
+
+  <div class="autosave" id="autosaveIndicator"></div>
+
+  <form id="mainForm" novalidate>
+
+  <!-- ═══ DATOS DEL CONTRIBUYENTE ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">—</span>
+        <span class="section-title">Datos del contribuyente</span>
+      </div>
+      <span class="section-toggle open">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="field-grid">
+        <div class="field">
+          <label>Apellido y nombre completo *</label>
+          <input type="text" name="nombre" required>
+        </div>
+        <div class="field">
+          <label>CUIT *</label>
+          <input type="text" name="cuit" placeholder="20-00000000-0" required>
+        </div>
+        <div class="field">
+          <label>E-mail de contacto *</label>
+          <input type="email" name="email" required>
+        </div>
+        <div class="field">
+          <label>Teléfono / WhatsApp</label>
+          <input type="text" name="telefono">
+        </div>
+      </div>
+      <div class="field">
+        <label>Domicilio fiscal</label>
+        <input type="text" name="domicilio">
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ A. SITUACIÓN GENERAL ══════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">A</span>
+        <span class="section-title">Situación general del contribuyente</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Ganancias + BP</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>¿Hubo cambios de domicilio, estado civil o grupo familiar durante 2022–2024?</label>
+        <div class="radio-group inline" data-triggers="cambios_fam">
+          <label class="radio-option"><input type="radio" name="cambios_fam" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="cambios_fam" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_cambios_fam_Si">
+        <div class="field">
+          <label>Detallar los cambios ocurridos</label>
+          <span class="hint">Indicar año y tipo: matrimonio, nacimiento de hijo, separación, mudanza, etc.</span>
+          <textarea name="cambios_fam_detalle"></textarea>
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">Carga de familia</div>
+        <div class="field">
+          <label>¿Tiene o tuvo cónyuge o unión convivencial durante el período?</label>
+          <div class="radio-group inline">
+            <label class="radio-option"><input type="radio" name="conyuge" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="conyuge" value="No"> No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Tiene hijos o hijastros a cargo?</label>
+          <div class="radio-group inline" data-triggers="hijos">
+            <label class="radio-option"><input type="radio" name="hijos" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="hijos" value="No"> No</label>
+          </div>
+        </div>
+        <div class="conditional" id="cond_hijos_Si">
+          <div class="field">
+            <label>Cantidad e años de nacimiento de cada hijo</label>
+            <input type="text" name="hijos_detalle" placeholder="Ej: 2 hijos — 2010 y 2015">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Tiene otros familiares a cargo (padres, suegros u otros)?</label>
+          <div class="radio-group inline" data-triggers="otros_cargo">
+            <label class="radio-option"><input type="radio" name="otros_cargo" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="otros_cargo" value="No"> No</label>
+          </div>
+        </div>
+        <div class="conditional" id="cond_otros_cargo_Si">
+          <div class="field">
+            <label>Indicar vínculo, nombre, CUIL y si percibieron ingresos propios</label>
+            <textarea name="otros_cargo_detalle"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Mantuvo residencia fiscal exclusiva en Argentina durante los tres ejercicios?</label>
+        <div class="radio-group inline" data-triggers="residencia">
+          <label class="radio-option"><input type="radio" name="residencia" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="residencia" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_residencia_No">
+        <div class="field">
+          <label>Indicar país y período de residencia en el exterior</label>
+          <span class="hint">Aplica si residió más de 183 días fuera de Argentina en algún ejercicio</span>
+          <textarea name="residencia_detalle"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ B. RELACIÓN DE DEPENDENCIA ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">B</span>
+        <span class="section-title">Ingresos en relación de dependencia (4ª categoría)</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Ganancias</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>¿Tuvo ingresos en relación de dependencia, jubilación o pensión?</label>
+        <div class="radio-group inline" data-triggers="dependencia">
+          <label class="radio-option"><input type="radio" name="dependencia" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="dependencia" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_dependencia_Si">
+        <div class="sub-section">
+          <div class="sub-title">Empleador / pagador principal</div>
+          <div class="field-grid">
+            <div class="field">
+              <label>Nombre o razón social</label>
+              <input type="text" name="empleador_nombre">
+            </div>
+            <div class="field">
+              <label>CUIT del empleador</label>
+              <input type="text" name="empleador_cuit">
+            </div>
+          </div>
+          <div class="field">
+            <label>Ejercicios con este empleador</label>
+            <div class="check-group inline">
+              <label class="check-option"><input type="checkbox" name="empleador_ejercicios" value="2022"> 2022</label>
+              <label class="check-option"><input type="checkbox" name="empleador_ejercicios" value="2023"> 2023</label>
+              <label class="check-option"><input type="checkbox" name="empleador_ejercicios" value="2024"> 2024</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Tipo de ingreso</label>
+            <select name="tipo_ingreso">
+              <option value="">— seleccionar —</option>
+              <option>Relación de dependencia privada</option>
+              <option>Relación de dependencia pública</option>
+              <option>Jubilación / Pensión ANSES</option>
+              <option>Pensión Caja Profesional</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Tuvo más de un empleador o pagador durante el período?</label>
+          <div class="radio-group inline" data-triggers="multi_empleador">
+            <label class="radio-option"><input type="radio" name="multi_empleador" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="multi_empleador" value="No"> No</label>
+          </div>
+        </div>
+        <div class="conditional" id="cond_multi_empleador_Si">
+          <div class="field">
+            <label>Detallar empleadores adicionales</label>
+            <span class="hint">Para cada uno: nombre, CUIT, período y tipo de ingreso</span>
+            <textarea name="multi_empleador_detalle"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Cuenta con el Formulario 1357 (F.649) de cada empleador por cada año?</label>
+          <div class="radio-group inline">
+            <label class="radio-option"><input type="radio" name="f1357" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="f1357" value="No"> No</label>
+            <label class="radio-option"><input type="radio" name="f1357" value="Parcialmente"> Parcialmente</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Cuáles deducciones corresponden?</label>
+          <div class="check-group">
+            <label class="check-option"><input type="checkbox" name="deducciones" value="obra_social"> Cuotas médico-asistenciales (obra social y prepaga)</label>
+            <label class="check-option"><input type="checkbox" name="deducciones" value="hipoteca"> Intereses de crédito hipotecario para vivienda única</label>
+            <label class="check-option"><input type="checkbox" name="deducciones" value="seguro_vida"> Prima de seguro de vida</label>
+            <label class="check-option"><input type="checkbox" name="deducciones" value="donaciones"> Donaciones a entidades reconocidas por ARCA</label>
+            <label class="check-option"><input type="checkbox" name="deducciones" value="honorarios_medicos"> Honorarios médicos u odontológicos</label>
+            <label class="check-option"><input type="checkbox" name="deducciones" value="servicio_dom"> Servicio doméstico</label>
+            <label class="check-option"><input type="checkbox" name="deducciones" value="alquiler_vh"> Alquiler de vivienda única (deducción 40%)</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Hay deducciones no informadas al empleador que corresponda incluir en la DDJJ?</label>
+          <span class="hint">De haberlas, detallar concepto, monto y año</span>
+          <textarea name="deducciones_no_informadas" placeholder="Dejar en blanco si no aplica"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ C. ACTIVIDAD INDEPENDIENTE ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">C</span>
+        <span class="section-title">Actividad independiente (3ª y 2ª categoría)</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Ganancias</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>¿Ejerció actividad profesional, comercial o de servicios en forma independiente?</label>
+        <div class="radio-group inline" data-triggers="independiente">
+          <label class="radio-option"><input type="radio" name="independiente" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="independiente" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_independiente_Si">
+        <div class="field-grid">
+          <div class="field">
+            <label>Régimen fiscal durante el período</label>
+            <select name="regimen_fiscal">
+              <option value="">— seleccionar —</option>
+              <option>Responsable Inscripto en IVA</option>
+              <option>Monotributo (todo el período)</option>
+              <option>Mixto (parte en cada régimen)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Actividad principal</label>
+            <input type="text" name="actividad_principal" placeholder="Descripción o código ARCA">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Cuenta con documentación contable por cada año?</label>
+          <span class="hint">Libro IVA Ventas o detalle de facturación, comprobantes de gastos deducibles</span>
+          <div class="radio-group inline">
+            <label class="radio-option"><input type="radio" name="doc_contable" value="Si completa"> Sí, completa</label>
+            <label class="radio-option"><input type="radio" name="doc_contable" value="Parcialmente"> Parcialmente</label>
+            <label class="radio-option"><input type="radio" name="doc_contable" value="No"> No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Percibió honorarios de dirección, gerencia o sindicatura en sociedades?</label>
+          <div class="radio-group inline" data-triggers="honorarios_dir">
+            <label class="radio-option"><input type="radio" name="honorarios_dir" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="honorarios_dir" value="No"> No</label>
+          </div>
+        </div>
+        <div class="conditional" id="cond_honorarios_dir_Si">
+          <div class="field">
+            <label>Detallar honorarios de dirección</label>
+            <span class="hint">Sociedad pagadora, CUIT, monto por año y si le practicaron retención</span>
+            <textarea name="honorarios_dir_detalle"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ D. INMUEBLES ALQUILADOS ═══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">D</span>
+        <span class="section-title">Rentas de 1ª categoría — inmuebles</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Ganancias</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>¿Alquiló o cedió en uso algún inmueble durante 2022–2024?</label>
+        <div class="radio-group inline" data-triggers="alquileres">
+          <label class="radio-option"><input type="radio" name="alquileres" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="alquileres" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_alquileres_Si">
+        <div class="field">
+          <label>Detalle de inmueble/s locado/s</label>
+          <span class="hint">Para cada inmueble: dirección, tipo de uso, alquiler mensual promedio y período. Si tuvo más de uno, describirlos todos acá.</span>
+          <textarea name="alquileres_detalle" style="min-height:96px"></textarea>
+        </div>
+        <div class="field">
+          <label>¿Qué gastos del inmueble tiene documentados?</label>
+          <div class="check-group">
+            <label class="check-option"><input type="checkbox" name="gastos_inm" value="impuestos"> Impuestos y tasas (ABL, Rentas)</label>
+            <label class="check-option"><input type="checkbox" name="gastos_inm" value="expensas"> Expensas a cargo del propietario</label>
+            <label class="check-option"><input type="checkbox" name="gastos_inm" value="seguros"> Seguros del inmueble</label>
+            <label class="check-option"><input type="checkbox" name="gastos_inm" value="reparaciones"> Reparaciones y mantenimiento</label>
+            <label class="check-option"><input type="checkbox" name="gastos_inm" value="inmobiliaria"> Honorarios de inmobiliaria o administración</label>
+            <label class="check-option"><input type="checkbox" name="gastos_inm" value="intereses_hip"> Intereses de crédito hipotecario sobre el inmueble locado</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ E. RENTAS CEDULARES ═══════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">E</span>
+        <span class="section-title">Rentas cedulares — inversiones financieras</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Ganancias</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="nota">Las rentas del art. 98 y ss. LIG tributan en forma separada (régimen cedular). Aplica a intereses, dividendos y resultados por venta de títulos valores.</div>
+      <div class="field">
+        <label>¿Cuáles instrumentos financieros tuvo durante el período?</label>
+        <div class="check-group">
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="pf_pesos"> Plazos fijos en pesos</label>
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="caja_ahorro"> Caja de ahorro o cuenta remunerada</label>
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="ons"> Obligaciones negociables (ONs)</label>
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="fci"> Fondos Comunes de Inversión (FCI)</label>
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="acciones"> Acciones o CEDEARs cotizantes</label>
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="dividendos"> Dividendos de acciones locales o del exterior</label>
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="cripto"> Criptomonedas o activos digitales</label>
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="titulos_pub"> Títulos públicos nacionales o provinciales</label>
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="activos_ext"> Activos del exterior (depósitos, bonos, acciones extranjeras)</label>
+          <label class="check-option"><input type="checkbox" name="instrumentos" value="ninguno"> Ninguno</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Cuenta con resúmenes anuales del broker o banco al 31/12 de cada año?</label>
+        <div class="radio-group inline">
+          <label class="radio-option"><input type="radio" name="resumenes_broker" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="resumenes_broker" value="No"> No</label>
+          <label class="radio-option"><input type="radio" name="resumenes_broker" value="Parcialmente"> Parcialmente</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Operó con broker o cuenta bancaria en el exterior?</label>
+        <div class="radio-group inline" data-triggers="broker_exterior">
+          <label class="radio-option"><input type="radio" name="broker_exterior" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="broker_exterior" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_broker_exterior_Si">
+        <div class="field">
+          <label>Detallar operaciones en el exterior</label>
+          <span class="hint">País, entidad, tipo de activo y montos aproximados en USD al 31/12 de cada año</span>
+          <textarea name="broker_exterior_detalle"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ F. INMUEBLES BP ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">F</span>
+        <span class="section-title">Inmuebles — activo de Bienes Personales</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Bienes Personales</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>¿Es titular o cotitular de algún inmueble?</label>
+        <div class="radio-group inline" data-triggers="bp_inmuebles">
+          <label class="radio-option"><input type="radio" name="bp_inmuebles" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="bp_inmuebles" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_bp_inmuebles_Si">
+        <div class="field">
+          <label>Listado de inmuebles al 31/12 de cada año declarado</label>
+          <span class="hint">Para cada inmueble: ubicación, uso (vivienda/locación/baldío/rural), % de titularidad, fecha de adquisición y valor de compra. Si tiene más de uno, describir todos acá.</span>
+          <textarea name="bp_inmuebles_detalle" style="min-height:96px"></textarea>
+        </div>
+        <div class="field">
+          <label>¿Hubo compras, ventas o permutas de inmuebles durante 2022–2024?</label>
+          <div class="radio-group inline" data-triggers="operaciones_inm">
+            <label class="radio-option"><input type="radio" name="operaciones_inm" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="operaciones_inm" value="No"> No</label>
+          </div>
+        </div>
+        <div class="conditional" id="cond_operaciones_inm_Si">
+          <div class="field">
+            <label>Detallar operaciones de compraventa</label>
+            <span class="hint">Año, tipo de operación, precio en pesos y dólares, escribanía interviniente</span>
+            <textarea name="operaciones_inm_detalle"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Algún inmueble fue adquirido con crédito hipotecario vigente?</label>
+          <div class="radio-group inline" data-triggers="hipoteca_vigente">
+            <label class="radio-option"><input type="radio" name="hipoteca_vigente" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="hipoteca_vigente" value="No"> No</label>
+          </div>
+        </div>
+        <div class="conditional" id="cond_hipoteca_vigente_Si">
+          <div class="field">
+            <label>Detallar crédito hipotecario</label>
+            <span class="hint">Banco, capital original, saldo al 31/12 de cada año y cuota mensual</span>
+            <textarea name="hipoteca_detalle"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ G. AUTOMOTORES ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">G</span>
+        <span class="section-title">Automotores y bienes registrables</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Bienes Personales</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>¿Tuvo autos, motos, embarcaciones o aeronaves registradas a su nombre?</label>
+        <div class="radio-group inline" data-triggers="automotores">
+          <label class="radio-option"><input type="radio" name="automotores" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="automotores" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_automotores_Si">
+        <div class="field">
+          <label>Detalle de vehículo/s</label>
+          <span class="hint">Para cada uno: marca, modelo, año, dominio/patente, fecha de compra, precio de compra en pesos y si fue vendido (indicar año). Si tuvo más de uno, describirlos todos acá.</span>
+          <textarea name="automotores_detalle" style="min-height:96px"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ H. ACTIVOS FINANCIEROS Y SOCIETARIOS ═════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">H</span>
+        <span class="section-title">Activos financieros y participaciones societarias</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Bienes Personales</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="sub-section">
+        <div class="sub-title">Cuentas bancarias</div>
+        <div class="field">
+          <label>¿Tuvo cuentas bancarias en Argentina (CA, CC, plazo fijo)?</label>
+          <div class="radio-group inline" data-triggers="cuentas_ar">
+            <label class="radio-option"><input type="radio" name="cuentas_ar" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="cuentas_ar" value="No"> No</label>
+          </div>
+        </div>
+        <div class="conditional" id="cond_cuentas_ar_Si">
+          <div class="field">
+            <label>Detallar cuentas en Argentina</label>
+            <span class="hint">Banco, tipo de cuenta, moneda y saldo al 31/12 de cada año</span>
+            <textarea name="cuentas_ar_detalle"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Tuvo cuentas en el exterior (bancos, brokers, wallets, exchanges)?</label>
+          <div class="radio-group inline" data-triggers="cuentas_ext">
+            <label class="radio-option"><input type="radio" name="cuentas_ext" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="cuentas_ext" value="No"> No</label>
+          </div>
+        </div>
+        <div class="conditional" id="cond_cuentas_ext_Si">
+          <div class="field">
+            <label>Detallar cuentas en el exterior</label>
+            <span class="hint">Entidad, país, tipo, moneda y saldo al 31/12 de cada año</span>
+            <textarea name="cuentas_ext_detalle"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">Inversiones al 31/12 de cada año</div>
+        <div class="field">
+          <label>¿Qué inversiones tenía al cierre de cada ejercicio?</label>
+          <div class="check-group">
+            <label class="check-option"><input type="checkbox" name="inversiones_bp" value="titulos"> Títulos públicos nacionales o provinciales</label>
+            <label class="check-option"><input type="checkbox" name="inversiones_bp" value="acc_no_cot"> Acciones de SA argentinas no cotizantes</label>
+            <label class="check-option"><input type="checkbox" name="inversiones_bp" value="acc_cot"> Acciones, ADRs o CEDEARs cotizantes</label>
+            <label class="check-option"><input type="checkbox" name="inversiones_bp" value="fci"> Cuotapartes de FCI</label>
+            <label class="check-option"><input type="checkbox" name="inversiones_bp" value="ons"> Obligaciones negociables (ONs)</label>
+            <label class="check-option"><input type="checkbox" name="inversiones_bp" value="cripto"> Criptomonedas o activos digitales</label>
+            <label class="check-option"><input type="checkbox" name="inversiones_bp" value="ninguna"> Ninguna</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Entidades donde tiene las inversiones</label>
+          <span class="hint">Indicar broker o banco (Balanz, IOL, Lemon, Binance, etc.) para poder solicitar los resúmenes al 31/12</span>
+          <textarea name="inversiones_entidades" placeholder="Dejar en blanco si no aplica"></textarea>
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">Participaciones societarias</div>
+        <div class="field">
+          <label>¿Es socio, accionista o titular en SRL, SA, SAS, fideicomiso u otro ente?</label>
+          <div class="radio-group inline" data-triggers="participaciones">
+            <label class="radio-option"><input type="radio" name="participaciones" value="Si"> Sí</label>
+            <label class="radio-option"><input type="radio" name="participaciones" value="No"> No</label>
+          </div>
+        </div>
+        <div class="conditional" id="cond_participaciones_Si">
+          <div class="field">
+            <label>Detallar participaciones societarias</label>
+            <span class="hint">Denominación, CUIT, tipo societario, % de participación y fecha de cierre del ejercicio social</span>
+            <textarea name="participaciones_detalle"></textarea>
+          </div>
+          <div class="field">
+            <label>¿La sociedad (SA o SAS) ingresó el impuesto de Bienes Personales como responsable sustituto?</label>
+            <div class="radio-group inline">
+              <label class="radio-option"><input type="radio" name="resp_sustituto" value="Si"> Sí</label>
+              <label class="radio-option"><input type="radio" name="resp_sustituto" value="No"> No</label>
+              <label class="radio-option"><input type="radio" name="resp_sustituto" value="No aplica"> No tengo SA/SAS</label>
+              <label class="radio-option"><input type="radio" name="resp_sustituto" value="No se"> No sé</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ I. EFECTIVO Y OTROS BIENES ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">I</span>
+        <span class="section-title">Efectivo y otros bienes del hogar</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Bienes Personales</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>¿Tenía dinero en efectivo (pesos o dólares) al 31/12 de alguno de los años?</label>
+        <div class="radio-group inline" data-triggers="efectivo">
+          <label class="radio-option"><input type="radio" name="efectivo" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="efectivo" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_efectivo_Si">
+        <div class="field">
+          <label>Indicar moneda y monto estimado al 31/12 de cada año</label>
+          <span class="hint">Los dólares se convierten al tipo de cambio BCRA al cierre de cada ejercicio</span>
+          <textarea name="efectivo_detalle" placeholder="Ej: USD 5.000 al 31/12/2022, $ 800.000 al 31/12/2023"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Tenía joyas, obras de arte, objetos de colección o metales preciosos?</label>
+        <div class="radio-group inline" data-triggers="joyas">
+          <label class="radio-option"><input type="radio" name="joyas" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="joyas" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_joyas_Si">
+        <div class="field">
+          <label>Descripción y valor estimado de mercado</label>
+          <textarea name="joyas_detalle"></textarea>
+        </div>
+      </div>
+      <div class="nota">Los bienes del hogar (muebles, electrodomésticos) se declaran como mínimo presunto equivalente al 5% del valor de los inmuebles habitados — no es necesario detallar cada bien.</div>
+    </div>
+  </div>
+
+  <!-- ═══ J. PASIVOS ════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">J</span>
+        <span class="section-title">Pasivos deducibles</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Bienes Personales</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="nota">Solo son deducibles las deudas con relación directa a bienes gravados. Deudas personales sin respaldo en activos del activo no son deducibles.</div>
+      <div class="field">
+        <label>¿Tenía deudas o préstamos vigentes al 31/12 de alguno de los años?</label>
+        <div class="radio-group inline" data-triggers="pasivos">
+          <label class="radio-option"><input type="radio" name="pasivos" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="pasivos" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_pasivos_Si">
+        <div class="field">
+          <label>¿Qué tipo de pasivos tenía?</label>
+          <div class="check-group">
+            <label class="check-option"><input type="checkbox" name="tipo_pasivos" value="hipotecario"> Crédito hipotecario (saldo capital al 31/12)</label>
+            <label class="check-option"><input type="checkbox" name="tipo_pasivos" value="prendario"> Préstamo prendario sobre automotor</label>
+            <label class="check-option"><input type="checkbox" name="tipo_pasivos" value="proveedores"> Deudas con proveedores vinculadas a actividad empresaria</label>
+            <label class="check-option"><input type="checkbox" name="tipo_pasivos" value="tarjeta"> Saldo de tarjetas de crédito al 31/12</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Detallar cada pasivo</label>
+          <span class="hint">Acreedor, saldo al 31/12 de cada año y bien al que está vinculado</span>
+          <textarea name="pasivos_detalle"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ K. OPERACIONES ESPECIALES Y REIBP ══════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">K</span>
+        <span class="section-title">Operaciones especiales y REIBP</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Ganancias + BP</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="nota">Las ventas de inmuebles adquiridos desde el 01/01/2018 pueden estar alcanzadas por Ganancias o ITI según la fecha de adquisición y el tipo de bien.</div>
+      <div class="field">
+        <label>¿Realizó ventas de inmuebles en 2022, 2023 o 2024?</label>
+        <div class="radio-group inline" data-triggers="ventas_inm">
+          <label class="radio-option"><input type="radio" name="ventas_inm" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="ventas_inm" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_ventas_inm_Si">
+        <div class="field">
+          <label>Detallar ventas de inmuebles</label>
+          <span class="hint">Año de venta, año de adquisición, precio en pesos y USD, si se acogió a la exención por venta de casa habitación única (art. 26 inc. l LIG)</span>
+          <textarea name="ventas_inm_detalle"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Optó por el REIBP (Régimen Especial de Ingreso de Bienes Personales — Ley 27.743)?</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="reibp" value="Si, ya ingrese"> Sí, ya ingresé el pago</label>
+          <label class="radio-option"><input type="radio" name="reibp" value="No opto"> No opté</label>
+          <label class="radio-option"><input type="radio" name="reibp" value="Consultar"> Quiero consultar si me conviene</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ L. IMPUESTOS PAGADOS ══════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">L</span>
+        <span class="section-title">Impuestos pagados y retenciones sufridas</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Ganancias</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>¿Ingresó anticipos de Ganancias en alguno de los ejercicios?</label>
+        <div class="radio-group inline">
+          <label class="radio-option"><input type="radio" name="anticipos" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="anticipos" value="No"> No</label>
+          <label class="radio-option"><input type="radio" name="anticipos" value="No se"> No sé</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Sufrió retenciones de Ganancias sobre honorarios (RG ARCA 830)?</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="ret_honorarios" value="Si con constancias"> Sí y tengo las constancias</label>
+          <label class="radio-option"><input type="radio" name="ret_honorarios" value="Si sin constancias"> Sí pero no tengo las constancias</label>
+          <label class="radio-option"><input type="radio" name="ret_honorarios" value="No"> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Tiene pagos a cuenta del Impuesto a los Débitos y Créditos Bancarios?</label>
+        <div class="radio-group inline">
+          <label class="radio-option"><input type="radio" name="idcb" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="idcb" value="No"> No</label>
+          <label class="radio-option"><input type="radio" name="idcb" value="No se"> No sé</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Tiene saldo a favor de Ganancias de ejercicios anteriores?</label>
+        <div class="radio-group inline">
+          <label class="radio-option"><input type="radio" name="saldo_favor" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="saldo_favor" value="No"> No</label>
+          <label class="radio-option"><input type="radio" name="saldo_favor" value="No se"> No sé</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ M. INFORMACIÓN COMPLEMENTARIA ════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-head" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <span class="section-letter">M</span>
+        <span class="section-title">Información complementaria</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span class="section-badge">Ganancias + BP</span>
+        <span class="section-toggle open">▾</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>¿Tuvo algún régimen de moratoria, plan de facilidades o blanqueo vigente durante el período?</label>
+        <div class="radio-group inline" data-triggers="moratoria">
+          <label class="radio-option"><input type="radio" name="moratoria" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="moratoria" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_moratoria_Si">
+        <div class="field">
+          <label>Detallar plan o moratoria</label>
+          <span class="hint">Organismo (ARCA, AGIP, ARBA), concepto regularizado, cuotas pendientes y estado del plan</span>
+          <textarea name="moratoria_detalle"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Participó en algún régimen de exteriorización o blanqueo de activos en 2023 o 2024?</label>
+        <div class="radio-group inline" data-triggers="blanqueo">
+          <label class="radio-option"><input type="radio" name="blanqueo" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="blanqueo" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_blanqueo_Si">
+        <div class="field">
+          <label>Tipo de bien exteriorizado y monto aproximado</label>
+          <textarea name="blanqueo_detalle"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Tiene bienes en fideicomiso como fiduciante o beneficiario?</label>
+        <div class="radio-group inline" data-triggers="fideicomiso">
+          <label class="radio-option"><input type="radio" name="fideicomiso" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="fideicomiso" value="No"> No</label>
+        </div>
+      </div>
+      <div class="conditional" id="cond_fideicomiso_Si">
+        <div class="field">
+          <label>Detallar fideicomiso</label>
+          <span class="hint">Tipo, CUIT, carácter (fiduciante/beneficiario) y naturaleza de los bienes</span>
+          <textarea name="fideicomiso_detalle"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label>¿Tiene sucesión indivisa pendiente o herencia en proceso?</label>
+        <div class="radio-group inline">
+          <label class="radio-option"><input type="radio" name="sucesion" value="Si"> Sí</label>
+          <label class="radio-option"><input type="radio" name="sucesion" value="No"> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Observaciones o información adicional relevante</label>
+        <span class="hint">Cualquier dato que considere importante y no haya sido capturado en las secciones anteriores</span>
+        <textarea name="observaciones" style="min-height:80px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FIRMA Y ENVÍO ═════════════════════════════════════════════════════ -->
+  <div class="firma-box">
+    <p>La información suministrada en este cuestionario es correcta y completa a mi leal saber y entender. Entiendo que las declaraciones juradas se confeccionarán sobre la base de los datos aquí consignados y la documentación que los respalde.</p>
+    <div class="firma-line">
+      <div class="firma-campo">
+        <label>Nombre completo</label>
+        <input type="text" name="firma_nombre">
+      </div>
+      <div class="firma-campo">
+        <label>Fecha</label>
+        <input type="text" name="firma_fecha" id="firmaFecha">
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button type="button" class="btn btn-primary" onclick="exportarXLSX()">Descargar respuestas (.xlsx)</button>
+    <button type="button" class="btn btn-secondary" onclick="guardarProgreso()">Guardar progreso</button>
+    <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">Limpiar formulario</button>
+  </div>
+
+  </form>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONDICIONALES ──────────────────────────────────────────────────────────
+document.addEventListener('change', function(e) {
+  const el = e.target;
+  if (el.type !== 'radio') return;
+  const name = el.name;
+  const val = el.value;
+  // Ocultar todos los condicionales de este radio group
+  document.querySelectorAll('[id^="cond_' + name + '_"]').forEach(c => {
+    c.classList.remove('visible');
+  });
+  // Mostrar el que corresponde
+  const target = document.getElementById('cond_' + name + '_' + val.replace(/[^a-zA-Z0-9]/g, '_'));
+  if (target) target.classList.add('visible');
+
+  // Estilo selected
+  document.querySelectorAll('input[name="' + name + '"]').forEach(r => {
+    r.closest('.radio-option').classList.remove('selected');
+  });
+  el.closest('.radio-option').classList.add('selected');
+
+  actualizarProgreso();
+  autoguardar();
+});
+
+document.addEventListener('change', function(e) {
+  const el = e.target;
+  if (el.type === 'checkbox') {
+    if (el.checked) el.closest('.check-option').classList.add('selected');
+    else el.closest('.check-option').classList.remove('selected');
+    actualizarProgreso();
+    autoguardar();
+  }
+});
+
+document.addEventListener('input', function(e) {
+  if (['text','email','textarea','select-one'].includes(e.target.type) || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+    actualizarProgreso();
+    autoguardar();
+  }
+});
+
+// ── SECCIONES COLAPSABLES ──────────────────────────────────────────────────
+function toggleSection(head) {
+  const body = head.nextElementSibling;
+  const toggle = head.querySelector('.section-toggle');
+  if (body.classList.contains('hidden')) {
+    body.classList.remove('hidden');
+    toggle.classList.add('open');
+  } else {
+    body.classList.add('hidden');
+    toggle.classList.remove('open');
+  }
+}
+
+// ── PROGRESO ───────────────────────────────────────────────────────────────
+function actualizarProgreso() {
+  const form = document.getElementById('mainForm');
+  const inputs = form.querySelectorAll('input[type=text], input[type=email], textarea, select');
+  const radios = {};
+  form.querySelectorAll('input[type=radio]').forEach(r => { radios[r.name] = radios[r.name] || r.checked; });
+  const checks = {};
+  form.querySelectorAll('input[type=checkbox]').forEach(c => { if(c.checked) checks[c.name] = true; });
+
+  let total = 0, filled = 0;
+  inputs.forEach(i => {
+    total++;
+    if (i.value.trim()) filled++;
+  });
+  Object.keys(radios).forEach(k => { total++; if(radios[k]) filled++; });
+  Object.keys(checks).forEach(k => { total++; filled++; });
+
+  const pct = total > 0 ? Math.round(filled / total * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + ' %';
+}
+
+// ── AUTOGUARDADO ───────────────────────────────────────────────────────────
+let saveTimer;
+function autoguardar() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    guardarProgreso(true);
+  }, 2000);
+}
+
+function guardarProgreso(silencioso) {
+  const data = {};
+  const form = document.getElementById('mainForm');
+  form.querySelectorAll('input, textarea, select').forEach(el => {
+    if (!el.name) return;
+    if (el.type === 'checkbox' || el.type === 'radio') {
+      if (el.checked) {
+        if (!data[el.name]) data[el.name] = [];
+        if (!Array.isArray(data[el.name])) data[el.name] = [data[el.name]];
+        data[el.name].push(el.value);
+      }
+    } else {
+      if (el.value) data[el.name] = el.value;
+    }
+  });
+  localStorage.setItem('lucci_ddjj_progreso', JSON.stringify(data));
+  const ind = document.getElementById('autosaveIndicator');
+  ind.textContent = 'Progreso guardado — ' + new Date().toLocaleTimeString('es-AR');
+  if (!silencioso) mostrarToast('Progreso guardado correctamente', 'success');
+}
+
+function cargarProgreso() {
+  const raw = localStorage.getItem('lucci_ddjj_progreso');
+  if (!raw) return;
+  try {
+    const data = JSON.parse(raw);
+    const form = document.getElementById('mainForm');
+    Object.entries(data).forEach(([name, value]) => {
+      const vals = Array.isArray(value) ? value : [value];
+      vals.forEach(v => {
+        const el = form.querySelector('[name="' + name + '"][value="' + CSS.escape(v) + '"]');
+        if (el) {
+          el.checked = true;
+          el.closest('.radio-option, .check-option')?.classList.add('selected');
+          // Disparar condicional si es radio
+          if (el.type === 'radio') {
+            document.querySelectorAll('[id^="cond_' + name + '_"]').forEach(c => c.classList.remove('visible'));
+            const target = document.getElementById('cond_' + name + '_' + v.replace(/[^a-zA-Z0-9]/g, '_'));
+            if (target) target.classList.add('visible');
+          }
+        } else {
+          const txt = form.querySelector('[name="' + name + '"]:not([type=radio]):not([type=checkbox])');
+          if (txt) txt.value = v;
+        }
+      });
+    });
+    actualizarProgreso();
+    document.getElementById('autosaveIndicator').textContent = 'Progreso recuperado del guardado anterior';
+  } catch(e) {}
+}
+
+function limpiarFormulario() {
+  if (!confirm('¿Confirmar que desea borrar todas las respuestas?')) return;
+  localStorage.removeItem('lucci_ddjj_progreso');
+  document.getElementById('mainForm').reset();
+  document.querySelectorAll('.radio-option, .check-option').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.conditional').forEach(el => el.classList.remove('visible'));
+  actualizarProgreso();
+  mostrarToast('Formulario limpiado', '');
+}
+
+// ── EXPORT XLSX ────────────────────────────────────────────────────────────
+function exportarXLSX() {
+  const form = document.getElementById('mainForm');
+  const data = {};
+  form.querySelectorAll('input, textarea, select').forEach(el => {
+    if (!el.name) return;
+    if (el.type === 'checkbox' || el.type === 'radio') {
+      if (el.checked) {
+        if (!data[el.name]) data[el.name] = [];
+        if (!Array.isArray(data[el.name])) data[el.name] = [data[el.name]];
+        data[el.name].push(el.value);
+      }
+    } else {
+      if (el.value) data[el.name] = el.value;
+    }
+  });
+
+  const labels = {
+    nombre: 'Apellido y nombre',
+    cuit: 'CUIT',
+    email: 'E-mail',
+    telefono: 'Teléfono',
+    domicilio: 'Domicilio fiscal',
+    cambios_fam: '¿Hubo cambios de situación familiar?',
+    cambios_fam_detalle: 'Detalle de cambios familiares',
+    conyuge: '¿Tiene cónyuge o unión convivencial?',
+    hijos: '¿Tiene hijos a cargo?',
+    hijos_detalle: 'Detalle de hijos',
+    otros_cargo: '¿Tiene otros familiares a cargo?',
+    otros_cargo_detalle: 'Detalle familiares a cargo',
+    residencia: '¿Residencia fiscal exclusiva en Argentina?',
+    residencia_detalle: 'Detalle residencia exterior',
+    dependencia: '¿Tuvo ingresos en relación de dependencia?',
+    empleador_nombre: 'Empleador principal — nombre',
+    empleador_cuit: 'Empleador principal — CUIT',
+    empleador_ejercicios: 'Ejercicios con empleador principal',
+    tipo_ingreso: 'Tipo de ingreso',
+    multi_empleador: '¿Tuvo más de un empleador?',
+    multi_empleador_detalle: 'Detalle empleadores adicionales',
+    f1357: '¿Cuenta con F.1357 / F.649?',
+    deducciones: 'Deducciones informadas',
+    deducciones_no_informadas: 'Deducciones no informadas al empleador',
+    independiente: '¿Ejerció actividad independiente?',
+    regimen_fiscal: 'Régimen fiscal',
+    actividad_principal: 'Actividad principal',
+    doc_contable: '¿Cuenta con documentación contable?',
+    honorarios_dir: '¿Percibió honorarios de dirección?',
+    honorarios_dir_detalle: 'Detalle honorarios de dirección',
+    alquileres: '¿Alquiló inmuebles?',
+    alquileres_detalle: 'Detalle inmuebles locados',
+    gastos_inm: 'Gastos de inmueble documentados',
+    instrumentos: 'Instrumentos financieros tenidos',
+    resumenes_broker: '¿Cuenta con resúmenes de broker?',
+    broker_exterior: '¿Operó en el exterior?',
+    broker_exterior_detalle: 'Detalle operaciones exterior',
+    bp_inmuebles: '¿Es titular de inmuebles?',
+    bp_inmuebles_detalle: 'Detalle inmuebles al 31/12',
+    operaciones_inm: '¿Hubo compraventas de inmuebles?',
+    operaciones_inm_detalle: 'Detalle compraventas',
+    hipoteca_vigente: '¿Tiene hipoteca vigente?',
+    hipoteca_detalle: 'Detalle hipoteca',
+    automotores: '¿Tuvo automotores registrados?',
+    automotores_detalle: 'Detalle vehículos',
+    cuentas_ar: '¿Tuvo cuentas bancarias en Argentina?',
+    cuentas_ar_detalle: 'Detalle cuentas Argentina',
+    cuentas_ext: '¿Tuvo cuentas en el exterior?',
+    cuentas_ext_detalle: 'Detalle cuentas exterior',
+    inversiones_bp: 'Inversiones al 31/12',
+    inversiones_entidades: 'Entidades de inversión',
+    participaciones: '¿Tiene participaciones societarias?',
+    participaciones_detalle: 'Detalle participaciones',
+    resp_sustituto: '¿Sociedad ingresó BP como resp. sustituto?',
+    efectivo: '¿Tenía efectivo al 31/12?',
+    efectivo_detalle: 'Detalle efectivo',
+    joyas: '¿Tenía joyas u objetos de valor?',
+    joyas_detalle: 'Detalle joyas y objetos',
+    pasivos: '¿Tenía pasivos al 31/12?',
+    tipo_pasivos: 'Tipo de pasivos',
+    pasivos_detalle: 'Detalle pasivos',
+    ventas_inm: '¿Realizó ventas de inmuebles?',
+    ventas_inm_detalle: 'Detalle ventas inmuebles',
+    reibp: 'REIBP — Ley 27.743',
+    anticipos: '¿Ingresó anticipos de Ganancias?',
+    ret_honorarios: 'Retenciones sobre honorarios RG 830',
+    idcb: 'Pago a cuenta IDCB',
+    saldo_favor: '¿Tiene saldo a favor ejercicios anteriores?',
+    moratoria: '¿Tuvo moratoria o plan de facilidades?',
+    moratoria_detalle: 'Detalle moratoria',
+    blanqueo: '¿Participó en blanqueo?',
+    blanqueo_detalle: 'Detalle blanqueo',
+    fideicomiso: '¿Tiene bienes en fideicomiso?',
+    fideicomiso_detalle: 'Detalle fideicomiso',
+    sucesion: '¿Tiene sucesión indivisa?',
+    observaciones: 'Observaciones adicionales',
+    firma_nombre: 'Firmante',
+    firma_fecha: 'Fecha de firma'
+  };
+
+  const rows = [['Campo', 'Respuesta']];
+  Object.entries(labels).forEach(([key, label]) => {
+    const val = data[key];
+    if (val !== undefined) {
+      rows.push([label, Array.isArray(val) ? val.join(' | ') : val]);
+    } else {
+      rows.push([label, '']);
+    }
+  });
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch: 45}, {wch: 80}];
+  XLSX.utils.book_append_sheet(wb, ws, 'DDJJ');
+
+  // Hoja de metadata
+  const meta = [
+    ['Estudio', 'Lucci & Asociados'],
+    ['Formulario', 'Cuestionario DDJJ — Bienes Personales y Ganancias'],
+    ['Ejercicios', '2022, 2023, 2024'],
+    ['Exportado', new Date().toLocaleString('es-AR')]
+  ];
+  const wsMeta = XLSX.utils.aoa_to_sheet(meta);
+  XLSX.utils.book_append_sheet(wb, wsMeta, 'Info');
+
+  const nombre = data['cuit'] ? 'DDJJ_' + data['cuit'].replace(/-/g,'') : 'DDJJ_respuestas';
+  XLSX.writeFile(wb, nombre + '.xlsx');
+  mostrarToast('Archivo descargado correctamente', 'success');
+}
+
+// ── TOAST ──────────────────────────────────────────────────────────────────
+function mostrarToast(msg, tipo) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (tipo || '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('firmaFecha').value = new Date().toLocaleDateString('es-AR');
+  cargarProgreso();
+  actualizarProgreso();
+});
+</script>
+</body>
+</html>
