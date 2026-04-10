@@ -416,7 +416,12 @@
         </div>
         <div class="field">
           <label>CUIT *</label>
-          <input type="text" name="cuit" placeholder="20-00000000-0" required>
+          <input type="text" name="cuit" placeholder="20-00000000-0" maxlength="13" required oninput="
+  let v = this.value.replace(/\D/g,'');
+  if(v.length > 2) v = v.slice(0,2) + '-' + v.slice(2);
+  if(v.length > 11) v = v.slice(0,11) + '-' + v.slice(11);
+  this.value = v.slice(0,13);
+">
         </div>
         <div class="field">
           <label>E-mail de contacto *</label>
