@@ -9,44 +9,47 @@
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --dark: #0D1117;
-    --dark2: #162032;
-    --dark3: #1a2940;
-    --muted: #9A9A92;
-    --light: #EEEEE8;
-    --accent: #00C896;
-    --border: #2a3a50;
+    /* Tokens de pagina-web/app/globals.css (.theme-light) — misma familia clara
+       que estudiolucci.com.ar y que los tres formularios */
+    --bg:          #F4F2EC;
+    --card:        #FBFAF6;
+    --card-hover:  #EFEBE3;
+    --text:        #16202F;
+    --muted:       #5A6472;
+    --accent-text: #007A5E;
+    --border:      rgba(22,32,47,0.16);
     --radius: 10px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--dark); color: var(--light); font-family: 'Outfit', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+  body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
   .container { max-width: 640px; width: 100%; padding: 2rem 1.25rem; }
   .header { text-align: center; margin-bottom: 2.5rem; }
   .header a { text-decoration: none; color: inherit; }
-  .header img { width: 88px; height: 88px; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #2a3a50; }
+  .header img { width: 88px; height: 88px; border-radius: 12px; margin-bottom: 1rem; border: 1px solid var(--border); }
   .header h1 { font-family: 'Spectral', serif; font-size: 1.75rem; font-weight: 600; margin-bottom: .25rem; }
-  .header p { color: var(--muted); font-size: .9rem; }
+  .header p { color: var(--muted); font-size: .95rem; }
   .card-list { display: flex; flex-direction: column; gap: 1rem; }
   .card {
-    background: var(--dark2);
+    background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 1.25rem 1.5rem;
     text-decoration: none;
-    color: var(--light);
+    color: var(--text);
     transition: all .2s;
     display: flex;
     align-items: center;
     gap: 1rem;
   }
-  .card:hover { background: var(--dark3); border-color: var(--accent); transform: translateY(-2px); }
+  .card:hover { background: var(--card-hover); border-color: var(--accent-text); transform: translateY(-2px); }
+  .card:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
   .card-icon { font-size: 1.5rem; width: 2.5rem; text-align: center; flex-shrink: 0; }
   .card-body { flex: 1; }
   .card-title { font-family: 'Spectral', serif; font-size: 1.15rem; font-weight: 600; margin-bottom: .2rem; }
-  .card-desc { color: var(--muted); font-size: .8rem; line-height: 1.4; }
-  .card-arrow { color: var(--accent); font-size: 1.25rem; flex-shrink: 0; }
-  .footer { margin-top: 3rem; text-align: center; color: var(--muted); font-size: .75rem; line-height: 1.6; }
-  .footer a { color: var(--accent); text-decoration: none; }
+  .card-desc { color: var(--muted); font-size: .875rem; line-height: 1.5; }
+  .card-arrow { color: var(--accent-text); font-size: 1.25rem; flex-shrink: 0; }
+  .footer { margin-top: 3rem; text-align: center; color: var(--muted); font-size: .8rem; line-height: 1.6; }
+  .footer a { color: var(--accent-text); text-decoration: underline; }
 </style>
 </head>
 <body>
