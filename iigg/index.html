@@ -69,7 +69,7 @@
     gap: 1.25rem;
   }
   .site-header img { width: 48px; height: 48px; object-fit: contain; }
-  .header-text h1 { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; color: var(--navy-text); letter-spacing: .01em; }
+  .header-text h1 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; color: var(--navy-text); letter-spacing: .01em; }
   .header-text p { font-size: 13px; color: var(--navy-muted); margin-top: 2px; letter-spacing: .04em; font-weight: 400; }
 
   /* PROGRESS */
@@ -83,7 +83,7 @@
 
   /* INTRO */
   .intro-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
-  .intro-box h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; color: var(--text); margin-bottom: .5rem; }
+  .intro-box h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
   .intro-box p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 62ch; font-weight: 400; }
   .intro-box .legal { margin-top: .85rem; padding-top: .85rem; border-top: 1px solid var(--border); font-size: 11px; letter-spacing: .04em; }
 
@@ -94,11 +94,27 @@
 
   /* SECTION */
   .section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1rem; overflow: hidden; }
-  .section-head { padding: 1rem 1.5rem; display: flex; align-items: center; gap: .75rem; cursor: pointer; user-select: none; transition: background .15s; }
-  .section-head:hover { background: var(--card-hover); }
+  .section-head { margin: 0; font-size: inherit; font-weight: inherit; }
+  .section-head button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background .15s;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    color: inherit;
+    text-align: left;
+  }
+  .section-head button:hover { background: var(--card-hover); }
+  .section-head button:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
   .section-title-wrap { display: flex; align-items: center; gap: .75rem; min-width: 0; flex: 1; }
-  .section-letter { font-family: var(--serif); font-size: 1rem; font-weight: 500; color: var(--muted); width: 22px; flex-shrink: 0; }
-  .section-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; color: var(--text); min-width: 0; }
+  .section-letter { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--muted); width: 22px; flex-shrink: 0; }
+  .section-title { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--text); min-width: 0; }
   .section-badge { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border2); color: var(--muted); flex-shrink: 0; font-weight: 400; }
   .section-toggle { color: var(--muted); font-size: 14px; transition: transform .25s; flex-shrink: 0; }
   .section-toggle.open { transform: rotate(180deg); }
@@ -107,7 +123,7 @@
 
   /* SUB SECTION */
   .sub-section { border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
-  .sub-section-title { font-family: var(--serif); font-size: .95rem; color: var(--text); font-weight: 400; }
+  .sub-section-title { font-family: var(--serif); font-size: 1.0625rem; color: var(--text); font-weight: 600; }
 
   /* FIELDS */
   .field { display: flex; flex-direction: column; gap: .4rem; }
@@ -259,7 +275,7 @@
 
   /* FIRMA */
   .firma-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-top: 2rem; }
-  .firma-box h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 400; color: var(--text); margin-bottom: .5rem; }
+  .firma-box h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
   .firma-box p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 62ch; margin-bottom: 1rem; font-weight: 400; }
   .firma-line { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
   .firma-campo { flex: 1; min-width: 160px; }
@@ -272,7 +288,7 @@
     .progress-wrap { padding: .6rem 1rem; }
     .form-shell { padding: 1.5rem 1rem 4rem; }
     .intro-box { padding: 1.25rem 1rem; }
-    .section-head { padding: .85rem 1rem; }
+    .section-head button { padding: .85rem 1rem; }
     .section-body { padding: 1rem; }
     .sub-section { padding: .85rem 1rem; }
     .btn-row { flex-direction: column; }
@@ -311,15 +327,17 @@
 
   <!-- A. SITUACION PERSONAL ════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">A</span>
-        <span class="section-title">Situación personal y actividad</span>
-      </div>
-      <span class="section-badge">Requerido</span>
-      <span class="section-toggle open">&#9662;</span>
-    </div>
-    <div class="section-body">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-iigg-1" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">A</span>
+          <span class="section-title">Situación personal y actividad</span>
+        </div>
+        <span class="section-badge">Requerido</span>
+        <span class="section-toggle open">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-1" class="section-body">
       <div class="field">
         <label>Ejercicio fiscal</label>
         <select name="ejercicio" id="ejercicioSelect" required>
@@ -385,15 +403,17 @@
 
   <!-- B. CARGAS DE FAMILIA ══════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">B</span>
-        <span class="section-title">Cargas de familia</span>
-      </div>
-      <span class="section-badge">Requerido</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-2" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">B</span>
+          <span class="section-title">Cargas de familia</span>
+        </div>
+        <span class="section-badge">Requerido</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-2" class="section-body hidden">
       <div class="nota">Si estás casado/a, la deducción por cónyuge corresponde solo si no tuvo ingresos propios superiores al mínimo no imponible en el año.</div>
       <div class="field">
         <label>&#191;Conyuge o conviviente a cargo (sin ingresos propios o menores al MNI)?</label>
@@ -427,15 +447,17 @@
 
   <!-- C. INGRESOS POR TRABAJO ═══════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">C</span>
-        <span class="section-title">Ingresos por trabajo</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-3" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">C</span>
+          <span class="section-title">Ingresos por trabajo</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-3" class="section-body hidden">
 
       <!-- Sub-bloque 1: Dependencia / Jubilacion -->
       <div class="sub-section">
@@ -497,15 +519,17 @@
 
   <!-- D. INGRESOS POR ALQUILERES ══════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">D</span>
-        <span class="section-title">Ingresos por alquileres</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-4" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">D</span>
+          <span class="section-title">Ingresos por alquileres</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-4" class="section-body hidden">
       <div class="field">
         <label>&#191;Cobraste alquileres de inmuebles propios?</label>
         <div class="radio-group inline">
@@ -547,15 +571,17 @@
 
   <!-- E. PARTICIPACION EN EMPRESAS ═════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">E</span>
-        <span class="section-title">Participación en empresas</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-5" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">E</span>
+          <span class="section-title">Participación en empresas</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-5" class="section-body hidden">
 
       <!-- Sub-bloque 1: Empresa unipersonal -->
       <div class="sub-section">
@@ -612,15 +638,17 @@
 
   <!-- F. VENTA DE BIENES ═══════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">F</span>
-        <span class="section-title">Venta de bienes</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-6" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">F</span>
+          <span class="section-title">Venta de bienes</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-6" class="section-body hidden">
       <div class="nota">Las ventas de acciones, bonos, CEDEARs y criptomonedas cotizantes <strong>NO van acá</strong>: salen del reporte anual del broker que se adjunta en la sección H (Inversiones). Los inmuebles comprados antes del 01/01/2018 tributan ITI, no Ganancias; igualmente declaralos si los vendiste.</div>
 
       <!-- ── Inmuebles ── -->
@@ -796,15 +824,17 @@
 
   <!-- G. RENTAS DEL EXTERIOR ═══════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">G</span>
-        <span class="section-title">Rentas del exterior</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-7" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">G</span>
+          <span class="section-title">Rentas del exterior</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-7" class="section-body hidden">
       <div class="field">
         <label>&#191;Obtuviste ingresos de fuente extranjera?</label>
         <div class="radio-group inline">
@@ -840,15 +870,17 @@
 
   <!-- H. INVERSIONES Y CUENTAS BANCARIAS ═══════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">H</span>
-        <span class="section-title">Inversiones y cuentas bancarias</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-8" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">H</span>
+          <span class="section-title">Inversiones y cuentas bancarias</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-8" class="section-body hidden">
       <div class="field">
         <label>&#191;Tenés plazos fijos, FCI, bonos, acciones u otras inversiones?</label>
         <div class="radio-group inline">
@@ -876,15 +908,17 @@
 
   <!-- I. GASTOS DEDUCIBLES PERSONALES ══════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">I</span>
-        <span class="section-title">Gastos deducibles personales</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-9" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">I</span>
+          <span class="section-title">Gastos deducibles personales</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-9" class="section-body hidden">
       <div class="nota">Carga los montos anuales totales de cada concepto. Nosotros aplicamos los topes legales correspondientes. Si no tenés alguno, dejalo vacio.</div>
 
       <div class="field">
@@ -938,15 +972,17 @@
 
   <!-- J. MOVIMIENTOS NO GRAVADOS ═══════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">J</span>
-        <span class="section-title">Movimientos no gravados</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-10" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">J</span>
+          <span class="section-title">Movimientos no gravados</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-10" class="section-body hidden">
       <div class="nota">Estos movimientos no pagan Ganancias pero son necesarios para la <strong>justificación patrimonial</strong>. Si recibiste alguno, es importante declararlo para evitar inconsistencias. Indicá el monto por año según corresponda.</div>
 
       <div class="field">
@@ -1037,15 +1073,17 @@
 
   <!-- K. PATRIMONIO AL 31/12 ═══════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">K</span>
-        <span class="section-title">Patrimonio al 31/12</span>
-      </div>
-      <span class="section-badge">Requerido</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-11" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">K</span>
+          <span class="section-title">Patrimonio al 31/12</span>
+        </div>
+        <span class="section-badge">Requerido</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-11" class="section-body hidden">
       <div class="field">
         <label>&#191;Ya completaste el cuestionario de Bienes Personales?</label>
         <div class="radio-group inline">
@@ -1080,15 +1118,17 @@
 
   <!-- L. OBSERVACIONES ═════════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">L</span>
-        <span class="section-title">Observaciones</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-iigg-12" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">L</span>
+          <span class="section-title">Observaciones</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">&#9662;</span>
+      </button>
+    </h3>
+    <div id="sec-iigg-12" class="section-body hidden">
       <div class="field">
         <label>&#191;Hay algo que no esté contemplado arriba y debamos saber?</label>
         <textarea name="observaciones" placeholder="Cualquier situación especial, cambios durante el año, aclaraciones..." style="min-height:120px"></textarea>
@@ -1154,17 +1194,14 @@
 const FORM_KEY = 'lucci_iigg_v2';
 
 /* ---- Toggle secciónes ---- */
-function toggleSection(head, event) {
+function toggleSection(btn, event) {
   event.stopPropagation();
-  const body = head.nextElementSibling;
-  const toggle = head.querySelector('.section-toggle');
-  if (body.classList.contains('hidden')) {
-    body.classList.remove('hidden');
-    toggle.classList.add('open');
-  } else {
-    body.classList.add('hidden');
-    toggle.classList.remove('open');
-  }
+  // el cuerpo se resuelve por aria-controls: el boton ya no es hermano del body
+  const body = document.getElementById(btn.getAttribute('aria-controls'));
+  const toggle = btn.querySelector('.section-toggle');
+  const abierta = body.classList.toggle('hidden') === false;
+  toggle.classList.toggle('open', abierta);
+  btn.setAttribute('aria-expanded', String(abierta));
 }
 
 /* ---- Toast ---- */

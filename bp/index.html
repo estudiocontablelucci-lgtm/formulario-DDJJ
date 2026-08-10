@@ -69,7 +69,7 @@
     gap: 1.25rem;
   }
   .site-header img { width: 48px; height: 48px; object-fit: contain; }
-  .header-text h1 { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; color: var(--navy-text); letter-spacing: .01em; }
+  .header-text h1 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; color: var(--navy-text); letter-spacing: .01em; }
   .header-text p { font-size: 13px; color: var(--navy-muted); margin-top: 2px; letter-spacing: .04em; font-weight: 400; }
 
   /* PROGRESS */
@@ -83,7 +83,7 @@
 
   /* INTRO */
   .intro-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
-  .intro-box h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; color: var(--text); margin-bottom: .5rem; }
+  .intro-box h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
   .intro-box p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 62ch; font-weight: 400; }
   .intro-box .legal { margin-top: .85rem; padding-top: .85rem; border-top: 1px solid var(--border); font-size: 11px; letter-spacing: .04em; }
 
@@ -94,11 +94,27 @@
 
   /* SECTION */
   .section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1rem; overflow: hidden; }
-  .section-head { padding: 1rem 1.5rem; display: flex; align-items: center; gap: .75rem; cursor: pointer; user-select: none; transition: background .15s; }
-  .section-head:hover { background: var(--card-hover); }
+  .section-head { margin: 0; font-size: inherit; font-weight: inherit; }
+  .section-head button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background .15s;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    color: inherit;
+    text-align: left;
+  }
+  .section-head button:hover { background: var(--card-hover); }
+  .section-head button:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
   .section-title-wrap { display: flex; align-items: center; gap: .75rem; min-width: 0; flex: 1; }
-  .section-letter { font-family: var(--serif); font-size: 1rem; font-weight: 500; color: var(--muted); width: 22px; flex-shrink: 0; }
-  .section-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; color: var(--text); min-width: 0; }
+  .section-letter { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--muted); width: 22px; flex-shrink: 0; }
+  .section-title { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--text); min-width: 0; }
   .section-badge { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border2); color: var(--muted); flex-shrink: 0; font-weight: 400; }
   .section-toggle { color: var(--muted); font-size: 14px; transition: transform .25s; flex-shrink: 0; }
   .section-toggle.open { transform: rotate(180deg); }
@@ -107,7 +123,7 @@
 
   /* SUB SECTION */
   .sub-section { border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
-  .sub-section-title { font-family: var(--serif); font-size: .95rem; color: var(--text); font-weight: 400; }
+  .sub-section-title { font-family: var(--serif); font-size: 1.0625rem; color: var(--text); font-weight: 600; }
 
   /* FIELDS */
   .field { display: flex; flex-direction: column; gap: .4rem; }
@@ -216,7 +232,7 @@
 
   /* FIRMA */
   .firma-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-top: 2rem; }
-  .firma-box h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 400; color: var(--text); margin-bottom: .5rem; }
+  .firma-box h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
   .firma-box p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 62ch; margin-bottom: 1rem; font-weight: 400; }
   .firma-line { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
   .firma-campo { flex: 1; min-width: 160px; }
@@ -229,7 +245,7 @@
     .progress-wrap { padding: .6rem 1rem; }
     .form-shell { padding: 1.5rem 1rem 4rem; }
     .intro-box { padding: 1.25rem 1rem; }
-    .section-head { padding: .85rem 1rem; }
+    .section-head button { padding: .85rem 1rem; }
     .section-body { padding: 1rem; }
     .sub-section { padding: .85rem 1rem; }
     .btn-row { flex-direction: column; }
@@ -268,15 +284,17 @@
 
   <!-- ══ A. SITUACIÓN GENERAL ═══════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">A</span>
-        <span class="section-title">Situación general</span>
-      </div>
-      <span class="section-badge">Requerido</span>
-      <span class="section-toggle open">▾</span>
-    </div>
-    <div class="section-body">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-bp-1" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">A</span>
+          <span class="section-title">Situación general</span>
+        </div>
+        <span class="section-badge">Requerido</span>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-1" class="section-body">
       <div class="field">
         <label>Ejercicio fiscal</label>
         <select name="ejercicio" id="ejercicioSelect" required>
@@ -328,15 +346,17 @@
 
   <!-- ══ B. INMUEBLES EN EL PAÍS ════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">B</span>
-        <span class="section-title">Inmuebles en el país</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-2" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">B</span>
+          <span class="section-title">Inmuebles en el país</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-2" class="section-body hidden">
       <div class="field">
         <label>¿Poseías inmuebles en Argentina al cierre del ejercicio?</label>
         <div class="radio-group inline">
@@ -427,15 +447,17 @@
 
   <!-- ══ C. INMUEBLES EN EL EXTERIOR ════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">C</span>
-        <span class="section-title">Inmuebles en el exterior</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-3" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">C</span>
+          <span class="section-title">Inmuebles en el exterior</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-3" class="section-body hidden">
       <div class="field">
         <label>¿Poseías inmuebles fuera de Argentina al cierre del ejercicio?</label>
         <div class="radio-group inline">
@@ -480,15 +502,17 @@
 
   <!-- ══ D. AUTOMOTORES Y RODADOS ══════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">D</span>
-        <span class="section-title">Automotores y rodados</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-4" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">D</span>
+          <span class="section-title">Automotores y rodados</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-4" class="section-body hidden">
       <div class="field">
         <label>¿Poseías automotores, motocicletas u otros rodados al cierre del ejercicio?</label>
         <div class="radio-group inline">
@@ -550,15 +574,17 @@
 
   <!-- ══ E. EMBARCACIONES Y AERONAVES ══════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">E</span>
-        <span class="section-title">Embarcaciones y aeronaves</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-5" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">E</span>
+          <span class="section-title">Embarcaciones y aeronaves</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-5" class="section-body hidden">
       <div class="field">
         <label>¿Poseías embarcaciones o aeronaves al cierre del ejercicio?</label>
         <div class="radio-group inline">
@@ -601,15 +627,17 @@
 
   <!-- ══ F. DINERO EN EFECTIVO ═════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">F</span>
-        <span class="section-title">Dinero en efectivo al 31/12</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-6" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">F</span>
+          <span class="section-title">Dinero en efectivo al 31/12</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-6" class="section-body hidden">
       <div class="nota">
         Detallar el efectivo en tu poder (no en cuentas bancarias) al cierre de cada ejercicio. Los montos en moneda extranjera se convierten a pesos por cotización BNA comprador del 31/12.
       </div>
@@ -638,15 +666,17 @@
 
   <!-- ══ G. CUENTAS BANCARIAS EN EL PAÍS ═══════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">G</span>
-        <span class="section-title">Cuentas bancarias en el país</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-7" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">G</span>
+          <span class="section-title">Cuentas bancarias en el país</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-7" class="section-body hidden">
       <div class="field">
         <label>¿Tenías cuentas bancarias en Argentina al cierre del ejercicio?</label>
         <div class="radio-group inline">
@@ -662,15 +692,17 @@
 
   <!-- ══ H. CUENTAS BANCARIAS EN EL EXTERIOR ═══════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">H</span>
-        <span class="section-title">Cuentas bancarias en el exterior</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-8" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">H</span>
+          <span class="section-title">Cuentas bancarias en el exterior</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-8" class="section-body hidden">
       <div class="field">
         <label>¿Tenías cuentas bancarias o de inversión en el exterior?</label>
         <div class="radio-group inline">
@@ -686,15 +718,17 @@
 
   <!-- ══ I. INVERSIONES FINANCIERAS ════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">I</span>
-        <span class="section-title">Inversiones financieras</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-9" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">I</span>
+          <span class="section-title">Inversiones financieras</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-9" class="section-body hidden">
       <div class="field">
         <label>¿Tenías inversiones (acciones, bonos, FCI, ON, CEDEARs) al 31/12?</label>
         <div class="radio-group inline">
@@ -730,15 +764,17 @@
 
   <!-- ══ J. CRIPTOMONEDAS ══════════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">J</span>
-        <span class="section-title">Criptomonedas y activos digitales</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-10" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">J</span>
+          <span class="section-title">Criptomonedas y activos digitales</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-10" class="section-body hidden">
       <div class="field">
         <label>¿Tenías criptomonedas o activos digitales al 31/12?</label>
         <div class="radio-group inline">
@@ -756,15 +792,17 @@
 
   <!-- ══ K. PARTICIPACIONES SOCIETARIAS ════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">K</span>
-        <span class="section-title">Participaciones societarias</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-11" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">K</span>
+          <span class="section-title">Participaciones societarias</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-11" class="section-body hidden">
       <div class="field">
         <label>¿Sos socio o accionista de sociedades argentinas (SA, SRL, SAS) al 31/12?</label>
         <div class="radio-group inline">
@@ -885,15 +923,17 @@
 
   <!-- ══ L. CRÉDITOS A COBRAR ══════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">L</span>
-        <span class="section-title">Créditos a cobrar</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-12" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">L</span>
+          <span class="section-title">Créditos a cobrar</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-12" class="section-body hidden">
       <div class="field">
         <label>¿Tenés préstamos o créditos a cobrar a terceros al 31/12?</label>
         <div class="radio-group inline">
@@ -979,15 +1019,17 @@
 
   <!-- ══ M. FIDEICOMISOS ═══════════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">M</span>
-        <span class="section-title">Fideicomisos</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-13" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">M</span>
+          <span class="section-title">Fideicomisos</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-13" class="section-body hidden">
       <div class="field">
         <label>¿Sos fiduciante, fiduciario o beneficiario de algún fideicomiso?</label>
         <div class="radio-group inline">
@@ -1049,15 +1091,17 @@
 
   <!-- ══ N. OBJETOS PERSONALES Y DEL HOGAR ═════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">N</span>
-        <span class="section-title">Objetos personales y del hogar</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-14" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">N</span>
+          <span class="section-title">Objetos personales y del hogar</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-14" class="section-body hidden">
       <div class="nota">
         Si no completás un valor real, la liquidación toma automáticamente el <strong>mínimo del 5%</strong> sobre el total de bienes (excluidas acciones y participaciones que pagan resp. sustituto, e inmuebles destinados a casa-habitación). Solo conviene declarar un monto si tu valor real es <strong>mayor</strong>.
       </div>
@@ -1070,15 +1114,17 @@
 
   <!-- ══ O. ARTE, JOYAS Y ANTIGÜEDADES ═════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">O</span>
-        <span class="section-title">Arte, joyas y antigüedades</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-15" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">O</span>
+          <span class="section-title">Arte, joyas y antigüedades</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-15" class="section-body hidden">
       <div class="field">
         <label>¿Poseés obras de arte, joyas u objetos de colección de valor significativo?</label>
         <div class="radio-group inline">
@@ -1146,15 +1192,17 @@
 
   <!-- ══ P. SEGUROS CON COMPONENTE DE AHORRO ═══════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">P</span>
-        <span class="section-title">Seguros con componente de ahorro</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-16" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">P</span>
+          <span class="section-title">Seguros con componente de ahorro</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-16" class="section-body hidden">
       <div class="field">
         <label>¿Tenés seguros de vida con ahorro o capitalización, o seguros de retiro?</label>
         <div class="radio-group inline">
@@ -1198,15 +1246,17 @@
 
   <!-- ══ Q. OBSERVACIONES ══════════════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">Q</span>
-        <span class="section-title">Observaciones y aclaraciones</span>
-      </div>
-      <span class="section-badge">Opcional</span>
-      <span class="section-toggle">▾</span>
-    </div>
-    <div class="section-body hidden">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-bp-17" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">Q</span>
+          <span class="section-title">Observaciones y aclaraciones</span>
+        </div>
+        <span class="section-badge">Opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-bp-17" class="section-body hidden">
       <div class="field">
         <label>¿Hay algún bien, deuda o situación que no esté contemplada arriba y debamos saber?</label>
         <textarea name="observaciones" placeholder="Ej: herencia en trámite, juicios pendientes, blanqueos adheridos, donaciones realizadas, etc." style="min-height:120px"></textarea>
@@ -1265,17 +1315,14 @@
 const FORM_KEY = 'lucci_bp_v2';
 
 /* ─────────────── Toggle secciones ─────────────── */
-function toggleSection(head, event) {
+function toggleSection(btn, event) {
   event.stopPropagation();
-  const body = head.nextElementSibling;
-  const toggle = head.querySelector('.section-toggle');
-  if (body.classList.contains('hidden')) {
-    body.classList.remove('hidden');
-    toggle.classList.add('open');
-  } else {
-    body.classList.add('hidden');
-    toggle.classList.remove('open');
-  }
+  // el cuerpo se resuelve por aria-controls: el boton ya no es hermano del body
+  const body = document.getElementById(btn.getAttribute('aria-controls'));
+  const toggle = btn.querySelector('.section-toggle');
+  const abierta = body.classList.toggle('hidden') === false;
+  toggle.classList.toggle('open', abierta);
+  btn.setAttribute('aria-expanded', String(abierta));
 }
 
 /* ─────────────── Progressive reveal ─────────────── */

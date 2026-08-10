@@ -70,7 +70,7 @@
   }
   .site-header a { display: flex; align-items: center; gap: 1.25rem; text-decoration: none; flex: 1; }
   .site-header img { width: 48px; height: 48px; object-fit: contain; }
-  .header-text h1 { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; color: var(--navy-text); letter-spacing: .01em; }
+  .header-text h1 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; color: var(--navy-text); letter-spacing: .01em; }
   .header-text p { font-size: 13px; color: var(--navy-muted); margin-top: 2px; letter-spacing: .04em; font-weight: 400; }
 
   /* PROGRESS */
@@ -84,16 +84,32 @@
 
   /* INTRO */
   .intro-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
-  .intro-box h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; color: var(--text); margin-bottom: .5rem; }
+  .intro-box h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
   .intro-box p { color: var(--muted); font-size: 14px; line-height: 1.7; font-weight: 400; max-width: 62ch; }
 
   /* SECTION */
   .section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1rem; overflow: hidden; }
-  .section-head { padding: 1rem 1.5rem; display: flex; align-items: center; gap: .75rem; cursor: pointer; user-select: none; transition: background .15s; }
-  .section-head:hover { background: var(--card-hover); }
+  .section-head { margin: 0; font-size: inherit; font-weight: inherit; }
+  .section-head button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background .15s;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    color: inherit;
+    text-align: left;
+  }
+  .section-head button:hover { background: var(--card-hover); }
+  .section-head button:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
   .section-title-wrap { display: flex; align-items: center; gap: .75rem; min-width: 0; flex: 1; }
-  .section-letter { font-family: var(--serif); font-size: 1rem; font-weight: 500; color: var(--muted); width: 22px; flex-shrink: 0; }
-  .section-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; color: var(--text); min-width: 0; }
+  .section-letter { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--muted); width: 22px; flex-shrink: 0; }
+  .section-title { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--text); min-width: 0; }
   .section-badge { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border2); color: var(--muted); flex-shrink: 0; font-weight: 400; }
   .section-toggle { color: var(--muted); font-size: 14px; transition: transform .25s; flex-shrink: 0; }
   .section-toggle.open { transform: rotate(180deg); }
@@ -208,6 +224,7 @@
   .autosave { font-size: 12px; color: var(--muted); text-align: right; margin-top: -.5rem; margin-bottom: .5rem; height: 16px; }
 
   /* FIRMA */
+  .firma-box h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--text); margin-bottom: .75rem; }
   .firma-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-top: 2rem; }
   .firma-box p { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 1rem; font-weight: 400; max-width: 62ch; }
   .firma-line { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
@@ -222,7 +239,7 @@
     .progress-wrap { padding: .6rem 1rem; }
     .form-shell { padding: 1.5rem 1rem 4rem; }
     .intro-box { padding: 1.25rem 1rem; }
-    .section-head { padding: .85rem 1rem; }
+    .section-head button { padding: .85rem 1rem; }
     .section-body { padding: 1rem; }
     .sub-section { padding: .85rem 1rem; }
     .btn-row { flex-direction: column; }
@@ -259,14 +276,16 @@
 
   <!-- DATOS PERSONALES -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">—</span>
-        <span class="section-title">Datos personales</span>
-      </div>
-      <span class="section-toggle open">▾</span>
-    </div>
-    <div class="section-body">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-mono-1" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">—</span>
+          <span class="section-title">Datos personales</span>
+        </div>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-mono-1" class="section-body">
       <div class="field-grid">
         <div class="field">
           <label>Apellido y nombre completo *</label>
@@ -344,15 +363,17 @@
 
   <!-- A. ACTIVIDAD -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">A</span>
-        <span class="section-title">Actividad económica</span>
-      </div>
-      <span class="section-badge">Monotributo</span>
-      <span class="section-toggle open">▾</span>
-    </div>
-    <div class="section-body">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-mono-2" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">A</span>
+          <span class="section-title">Actividad económica</span>
+        </div>
+        <span class="section-badge">Monotributo</span>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-mono-2" class="section-body">
       <div class="nota">Describirla con el mayor detalle posible: qué producís, vendés o prestás, a quién y cómo. No es necesario conocer el código de actividad — lo asignamos nosotros.</div>
       <div class="field">
         <label>Descripción de la/s actividad/es que realizás *</label>
@@ -395,15 +416,17 @@
 
   <!-- B. LOCAL -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">B</span>
-        <span class="section-title">Local o establecimiento</span>
-      </div>
-      <span class="section-badge">Monotributo</span>
-      <span class="section-toggle open">▾</span>
-    </div>
-    <div class="section-body">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-mono-3" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">B</span>
+          <span class="section-title">Local o establecimiento</span>
+        </div>
+        <span class="section-badge">Monotributo</span>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-mono-3" class="section-body">
       <div class="nota">La superficie afectada y el consumo eléctrico son parámetros que determinan la categoría. Si trabajás de forma remota o desde tu casa sin espacio diferenciado, respondé que no tenés local.</div>
       <div class="field">
         <label>¿Desarrollás la actividad en un local o establecimiento físico distinto a tu domicilio?</label>
@@ -460,15 +483,17 @@
 
   <!-- C. CUENTA BANCARIA -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">C</span>
-        <span class="section-title">Cuenta bancaria para débito de cuota</span>
-      </div>
-      <span class="section-badge">Monotributo</span>
-      <span class="section-toggle open">▾</span>
-    </div>
-    <div class="section-body">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-mono-4" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">C</span>
+          <span class="section-title">Cuenta bancaria para débito de cuota</span>
+        </div>
+        <span class="section-badge">Monotributo</span>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-mono-4" class="section-body">
       <div class="nota">La cuota mensual del monotributo se debita automáticamente. Necesitamos el CBU de la cuenta que querés vincular.</div>
       <div class="field-grid">
         <div class="field">
@@ -499,15 +524,17 @@
 
   <!-- D. OBRA SOCIAL -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">D</span>
-        <span class="section-title">Obra social</span>
-      </div>
-      <span class="section-badge">Monotributo</span>
-      <span class="section-toggle open">▾</span>
-    </div>
-    <div class="section-body">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-mono-5" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">D</span>
+          <span class="section-title">Obra social</span>
+        </div>
+        <span class="section-badge">Monotributo</span>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-mono-5" class="section-body">
       <div class="nota">Como monotributista podés elegir una obra social del padrón habilitado por la Superintendencia de Servicios de Salud. Consultalo en: <a href="https://www.sssalud.gob.ar/?page=listRnosc&tipo=3" target="_blank">sssalud.gob.ar — Obras sociales para monotributistas ↗</a></div>
       <div class="field">
         <label>Obra social elegida</label>
@@ -533,15 +560,17 @@
 
   <!-- E. JURISDICCIONES -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">E</span>
-        <span class="section-title">Jurisdicciones donde operás</span>
-      </div>
-      <span class="section-badge">Ingresos Brutos</span>
-      <span class="section-toggle open">▾</span>
-    </div>
-    <div class="section-body">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-mono-6" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">E</span>
+          <span class="section-title">Jurisdicciones donde operás</span>
+        </div>
+        <span class="section-badge">Ingresos Brutos</span>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-mono-6" class="section-body">
       <div class="nota">Esta información determina si corresponde inscripción local en Ingresos Brutos o bajo <strong>Convenio Multilateral (COMARB)</strong>, que aplica cuando la actividad se desarrolla en más de una provincia.</div>
       <div class="field">
         <label>¿Realizás actividad en más de una provincia, o en CABA y provincia de Buenos Aires simultáneamente?</label>
@@ -621,15 +650,17 @@
 
   <!-- F. SITUACIÓN PREVIA -->
   <div class="section">
-    <div class="section-head" onclick="toggleSection(this, event)">
-      <div class="section-title-wrap">
-        <span class="section-letter">F</span>
-        <span class="section-title">Situación fiscal previa</span>
-      </div>
-      <span class="section-badge">Monotributo</span>
-      <span class="section-toggle open">▾</span>
-    </div>
-    <div class="section-body">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-mono-7" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">F</span>
+          <span class="section-title">Situación fiscal previa</span>
+        </div>
+        <span class="section-badge">Monotributo</span>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-mono-7" class="section-body">
       <div class="field">
         <label>¿Estuviste inscripto en Monotributo anteriormente?</label>
         <div class="radio-group inline" data-triggers="mono_previo">
@@ -788,12 +819,14 @@ document.addEventListener('input', function(e) {
   autoguardar();
 });
 
-function toggleSection(head, event) {
+function toggleSection(btn, event) {
   event.stopPropagation();
-  const body = head.nextElementSibling;
-  const toggle = head.querySelector('.section-toggle');
-  body.classList.toggle('hidden');
-  toggle.classList.toggle('open');
+  // el cuerpo se resuelve por aria-controls: el boton ya no es hermano del body
+  const body = document.getElementById(btn.getAttribute('aria-controls'));
+  const toggle = btn.querySelector('.section-toggle');
+  const abierta = body.classList.toggle('hidden') === false;
+  toggle.classList.toggle('open', abierta);
+  btn.setAttribute('aria-expanded', String(abierta));
 }
 
 function actualizarProgreso() {
