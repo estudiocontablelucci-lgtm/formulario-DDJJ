@@ -13,25 +13,20 @@ Publicado con GitHub Pages desde `main` en **formularios.estudiolucci.com.ar**
 | `/bp/` | Bienes Personales (Ley 23.966) |
 | `/iigg/` | Ganancias Personas Humanas (Ley 20.628) |
 
-## Este repo es un artefacto de deploy
+## Los HTML se editan acá
 
-Las fuentes de los tres formularios viven en `Ecosistema/formularios-dev/`, junto
-con las specs, los workflows de n8n y el `CLAUDE.md` que documenta el design
-system. El flujo normal es: editar allá → copiar acá → push a `main`.
+Este repo es el único lugar donde viven los formularios, y el único con git. Las
+specs de diseño, los prompts y los workflows de n8n están en
+`Ecosistema/formularios-dev/`.
 
-**Esa copia pisa el destino.** Si se edita un formulario directamente en este
-repo, hay que copiarlo de vuelta a `formularios-dev` o el próximo deploy lo borra.
-Antes de tocar algo, verificar que coincidan:
+Hasta ago 2026 cada HTML tenía una copia en `formularios-dev` y el flujo era
+"editar allá → copiar acá". No había build de por medio: eran dos copias del mismo
+archivo, y la copia pisaba el destino, así que una tanda de trabajo hecha
+directamente acá quedó a un `cp` de desaparecer. Se eliminó la duplicación.
 
-```bash
-# desde Ecosistema/
-diff "formularios-dev/Monotributo/Formulario - Monotributo.html" mono/index.html
-diff "formularios-dev/bienes-personales/cuestionario-bp.html"    bp/index.html
-diff "formularios-dev/ganancias-ph/cuestionario-iigg.html"       iigg/index.html
-```
+Ver `CLAUDE.md` para el design system, los patrones de UI y las reglas de contraste.
 
-Dos cosas existen **sólo acá** y no tienen contraparte en las fuentes: la landing
-(`index.html`) y los scripts de mantenimiento (`scripts/`).
+**El repo es público**: nada de claves, workflows de n8n ni datos de clientes.
 
 ## scripts/
 
