@@ -14,8 +14,14 @@ prompts de diseño y los workflows de n8n viven en `Ecosistema/formularios-dev/`
 | `/iigg/` | Ganancias Personas Humanas (Ley 20.628) |
 
 Deploy: GitHub Pages desde `main` → **formularios.estudiolucci.com.ar**.
-Push a `main` publica; el build tarda ~50s. **El repo es público: nada de claves,
-workflows de n8n ni datos de clientes acá.**
+Push a `main` publica; el build tarda ~50s.
+
+> **Todo lo que entra a este repo queda en internet dos veces**: el repo es público
+> *y* Pages sirve el árbol completo, no sólo los HTML. `/CLAUDE.md`, `/README.md` y
+> `/scripts/*.py` responden 200 en el dominio — verificado. Nada de credenciales,
+> workflows de n8n, datos de clientes ni specs internas acá; esas viven en
+> `Ecosistema/formularios-dev/`, que no se publica. Es la razón por la que las dos
+> carpetas siguen separadas.
 
 ```bash
 python -m http.server 8123     # probar en local
