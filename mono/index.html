@@ -121,6 +121,9 @@
   .field label { font-size: 15px; font-weight: 400; color: var(--text); line-height: 1.5; overflow-wrap: break-word; }
   .field .hint { font-size: 14px; color: var(--muted); margin-top: -2px; overflow-wrap: break-word; font-weight: 400; max-width: 62ch; }
   .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  /* Los controles se apoyan en el pie de la fila: si una columna tiene hint (o un
+     label que envuelve) y la otra no, input y select igual quedan a la misma altura. */
+  .field-grid > .field > :is(input, select, textarea, .radio-group):last-child { margin-top: auto; }
   @media(max-width:520px) { .field-grid { grid-template-columns: 1fr; } }
 
   input[type="text"],
