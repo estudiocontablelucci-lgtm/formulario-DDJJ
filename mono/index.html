@@ -430,7 +430,7 @@
       </button>
     </h3>
     <div id="sec-mono-3" class="section-body">
-      <div class="nota">La superficie afectada y el consumo eléctrico son parámetros que determinan la categoría. Si trabajás de forma remota o desde tu casa sin espacio diferenciado, respondé que no tenés local.</div>
+      <div class="nota">La superficie afectada, el consumo eléctrico y el alquiler son parámetros que determinan la categoría. Si trabajás de forma remota o desde tu casa sin espacio diferenciado, respondé que no tenés local.</div>
       <div class="field">
         <label>¿Desarrollás la actividad en un local o establecimiento físico distinto a tu domicilio?</label>
         <div class="radio-group inline" data-triggers="tiene_local">
@@ -444,6 +444,11 @@
           <div class="field">
             <label>Dirección del local</label>
             <input type="text" name="local_direccion" placeholder="Calle, número, localidad, provincia">
+          </div>
+          <div class="field">
+            <label>Número de partida inmobiliaria</label>
+            <span class="hint">Figura en la boleta del impuesto inmobiliario o de ABL. Si no la tenés a mano, dejalo en blanco.</span>
+            <input type="text" name="local_partida" placeholder="Ej: 055-123456-7">
           </div>
           <div class="field-grid">
             <div class="field">
@@ -459,10 +464,17 @@
           </div>
           <div class="field">
             <label>Relación con el local</label>
-            <div class="radio-group inline">
+            <div class="radio-group inline" data-triggers="local_relacion">
               <label class="radio-option"><input type="radio" name="local_relacion" value="Propio"> Propio</label>
               <label class="radio-option"><input type="radio" name="local_relacion" value="Alquilado"> Alquilado</label>
               <label class="radio-option"><input type="radio" name="local_relacion" value="Comodato"> Comodato</label>
+            </div>
+          </div>
+          <div class="conditional" id="cond_local_relacion_Alquilado">
+            <div class="field">
+              <label>Alquiler anual del local</label>
+              <span class="hint">Total del alquiler por 12 meses, sin expensas ni impuestos. Si el contrato es por menos de un año, anualizalo.</span>
+              <input type="text" name="local_alquiler_anual" placeholder="$ 0">
             </div>
           </div>
         </div>
@@ -984,8 +996,10 @@ function exportarXLSX() {
     actividad_descripcion:'Descripción de actividades', fecha_inicio:'Fecha de inicio estimada',
     tipo_actividad:'Tipo de actividad', empleados:'¿Tiene empleados?', empleados_cantidad:'Cantidad de empleados',
     tiene_local:'¿Tiene local físico?', local_direccion:'Dirección del local',
+    local_partida:'Partida inmobiliaria del local',
     local_superficie:'Superficie del local (m²)', local_kwh:'Consumo eléctrico anual (kWh)',
-    local_relacion:'Relación con el local', domicilio_actividad:'¿Usa domicilio para actividad?',
+    local_relacion:'Relación con el local', local_alquiler_anual:'Alquiler anual del local',
+    domicilio_actividad:'¿Usa domicilio para actividad?',
     domicilio_superficie:'Superficie domicilio afectada (m²)',
     banco:'Banco / Entidad', tipo_cuenta:'Tipo de cuenta', cbu:'CBU', alias:'Alias',
     obra_social:'Obra social elegida', grupo_familiar:'¿Incorpora grupo familiar?',
