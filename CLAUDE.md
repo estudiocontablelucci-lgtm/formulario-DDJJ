@@ -123,5 +123,11 @@ seco. Trabajan por selector, no con reemplazos globales: `iigg` tiene un bloque
   van acá: van en las planillas de liquidación del estudio.
 - **Sin notas técnicas para el cliente**: criterios de valuación y artículos de
   ley los maneja el estudio.
-- Si se agregan o quitan campos, hay que actualizar `n8n/headers-*.tsv` en
-  `formularios-dev` y regenerar la Ficha de la Sheet, o el envío se desalinea.
+- Si se agregan o quitan campos, la Sheet necesita una columna con ese mismo
+  `name`. El nodo de n8n mapea **por nombre de header** (`autoMapInputData`), así
+  que un campo sin columna no rompe nada: llega al webhook y se descarta **en
+  silencio**. El envío no se corre — se pierde ese dato y nada avisa.
+  En `formularios-dev/n8n/`: `sync-headers.py <form>` inserta en la Sheet lo que
+  falte del TSV (dry run por defecto, `--apply` para escribir; sólo inserta, nunca
+  borra ni reordena, y no toca los envíos ya cargados), y después
+  `create-ficha.py <form>` regenera la Ficha.
