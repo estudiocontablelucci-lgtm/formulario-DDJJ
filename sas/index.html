@@ -1315,6 +1315,20 @@ function recolectarDatos() {
   data.admin_suplente = admins.suplente;
   data.socios_cantidad = String(socios.length);
   data.participacion_suma = fmtPct(socios.reduce((a, s) => a + parsePct(s.participacion), 0)) + ' %';
+
+  /* Los números viajan SIN formato local. La Sheet está en locale es_MX, donde el
+     punto es separador decimal: mandar "900.000" a la argentina la guardaba como
+     900 — el capital de la sociedad, mil veces más chico, en el dato que después
+     va al instrumento. Lo mismo al revés con una participación "33,33", que en
+     es_MX se lee 3333.
+     El input le sigue mostrando al cliente los miles con punto; lo que se
+     normaliza es únicamente lo que sale al webhook. */
+  const capital = parseMonto(data.capital_monto);
+  if (capital) data.capital_monto = String(capital);
+  socios.forEach((s, i) => {
+    const k = 'socio_' + (i + 1) + '_participacion';
+    if (data[k]) data[k] = String(parsePct(s.participacion));
+  });
   return data;
 }
 
@@ -1420,7 +1434,8 @@ function exportarXLSX() {
   });
 
   rows.push(['CAPITAL SOCIAL', '']);
-  push('Monto del capital', data.capital_monto);
+  // En el Excel sí conviene el formato local: lo lee una persona, no una Sheet.
+  push('Monto del capital', data.capital_monto ? fmtMoneda.format(Number(data.capital_monto)) : '');
   push('Suma de participaciones', data.participacion_suma);
   push('Mínimo legal de referencia', fmtMoneda.format(CAPITAL_MINIMO.monto) + ' (' + CAPITAL_MINIMO.referencia + ', a ' + CAPITAL_MINIMO.vigencia + ')');
 
