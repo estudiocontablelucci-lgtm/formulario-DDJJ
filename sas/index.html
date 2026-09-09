@@ -633,11 +633,11 @@
       <div class="field">
         <label>Fecha de cierre *</label>
         <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="31/12" required> 31 de diciembre <span style="color:var(--muted)">— lo usual</span></label>
-          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="31/03"> 31 de marzo</label>
-          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="30/06"> 30 de junio</label>
-          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="31/10"> 31 de octubre</label>
-          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="A definir"> Prefiero conversarlo con el estudio</label>
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="31 de diciembre" required> 31 de diciembre <span style="color:var(--muted)">— lo usual</span></label>
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="31 de marzo"> 31 de marzo</label>
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="30 de junio"> 30 de junio</label>
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="31 de octubre"> 31 de octubre</label>
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="A definir con el estudio"> Prefiero conversarlo con el estudio</label>
         </div>
       </div>
     </div>
@@ -1296,6 +1296,17 @@ function recolectarDatos() {
   // Los checkboxes crudos no viajan: la Sheet recibe los nombres resueltos.
   Object.keys(data).forEach(k => {
     if (k.startsWith('admin_titular_socio_') || k === 'admin_titular_externo' || k === 'admin_suplente_ref') delete data[k];
+  });
+
+  /* Los bloques de persona no socia tienen "Argentina" precargado, asi que se
+     enviaban aunque estuvieran ocultos: la Ficha mostraba un "Titular no socio"
+     con nacionalidad y nada mas, una persona que no existe. Si el bloque no
+     aplica, no viaja ninguno de sus campos. */
+  const hayTitularExterno = titularesSeleccionados().includes('externo');
+  const haySuplenteExterno = document.getElementById('suplenteSelect').value === 'externo';
+  Object.keys(data).forEach(k => {
+    if (!hayTitularExterno && k.startsWith('admin_tit_ext_')) delete data[k];
+    if (!haySuplenteExterno && k.startsWith('admin_sup_ext_')) delete data[k];
   });
 
   const admins = resolverAdmins();
