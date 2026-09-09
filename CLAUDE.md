@@ -70,6 +70,11 @@ rompe los formularios. Ratios calculados, no elegidos a ojo:
   cream, ni `rgba(22,32,47,0.45)`.
 - **Peso mínimo 400.** El 300 se ve lavado en claro y emborronado en oscuro.
 - **Nada de texto por debajo de 12px**, menos aún en mayúsculas.
+- **`max-width: 62ch` va en el texto suelto, no en las cajas.** La medida de línea
+  es correcta para un `.hint` bajo un label, pero dentro de una caja con fondo y
+  borde —`.nota`, `.aviso`, `.intro-box`, `.firma-box`— que está al lado de inputs
+  que llegan al borde, el corte no se lee como línea corta: se lee como layout
+  roto. En esas cajas el ancho lo pone el contenedor.
 
 Al tocar colores, verificar con un cálculo de contraste — no a ojo. Mínimos: 4.5:1
 texto, 3:1 bordes y anillos de foco.
@@ -107,14 +112,49 @@ Logo: JPEG base64 embebido, compartido entre los cuatro archivos.
 
 ## scripts/
 
-Transforman los tres formularios a la vez. Todos aceptan `--check` para correr en
-seco. Trabajan por selector, no con reemplazos globales: `iigg` tiene un bloque
+Transforman los cuatro formularios a la vez. Todos aceptan `--check` para correr
+en seco. Trabajan por selector, no con reemplazos globales: `iigg` tiene un bloque
 `.alerta-mono` propio que un search & replace ciego pisaría.
 
 | Script | Qué hace |
 |---|---|
 | `migrar_tema_claro.py` | Migra la paleta al tema claro |
 | `mejorar_titulos.py` | Escala tipográfica y acordeón accesible |
+| `arreglar_progreso.py` | Progreso sobre campos aplicables + saca el 62ch de las cajas |
+
+> **Los cuatro formularios no comparten el JS, solo el aspecto.** `mono` y `sas`
+> recorren `querySelectorAll` y usan `#progressLabel`; `bp` e `iigg` recorren
+> `form.elements` y usan `#progressText`. Y los bloques que se revelan se ocultan
+> de dos maneras distintas: `.conditional` sin `.visible` en mono/sas,
+> `.reveal-slot` con `display:none` en bp/iigg. Un cambio de comportamiento se
+> aplica por su propio ancla en cada archivo — asumir una implementación común es
+> lo que hace que un fix "aplicado a los cuatro" toque solo dos.
+
+---
+
+## La barra de progreso mide lo que falta hacer, no cuántos campos hay
+
+Solo cuentan los campos que el cliente tiene que completar. Quedan afuera —**del
+numerador y del denominador**— los de un bloque de reveal cerrado y los que el
+formulario resuelve solo (`data-autocompletado`: la fecha de firma, la
+nacionalidad precargada de `sas`).
+
+Sacar algo de un solo lado vuelve el 100% inalcanzable, que era justo el bug.
+Antes de arreglarlo, contando los campos ocultos, un formulario **entero
+completo** mostraba:
+
+| | ocultos | marcaba |
+|---|---|---|
+| `bp` | 94 de 104 | **10 %** |
+| `mono` | 18 de 40 | **55 %** |
+| `sas` | ~20 de ~70 | **70 %** |
+
+Las secciones **colapsadas del acordeón sí cuentan**: esos campos aplican, solo
+están plegados. La distinción es "no aplica" contra "no está a la vista".
+
+> Se descubrió al notar que `sas` arrancaba en 7% recién abierto. El 7% era la
+> punta: cinco campos autocompletados. Lo caro estaba del otro lado de la
+> fracción, y llevaba meses en producción en los otros tres.
 
 ---
 
