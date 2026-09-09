@@ -191,7 +191,9 @@
     font-size: 14px;
     color: var(--muted);
     line-height: 1.65;
-    max-width: 62ch;
+    /* Sin max-width: la medida de 62ch es buena para un párrafo suelto, pero esto
+       es una caja con fondo y borde al lado de campos que llegan al borde — ahí
+       el corte no se lee como línea corta, se lee como layout roto. */
   }
   .nota strong { color: var(--text); font-weight: 500; }
   .nota a { color: var(--accent-text); text-decoration: underline; }
@@ -269,7 +271,7 @@
 
   /* Aviso de validación en vivo. Reservado en el flujo, no flotante:
      un error que empuja el contenido es peor que uno que ya tenía su lugar. */
-  .aviso { font-size: 14px; line-height: 1.6; border-radius: var(--radius); padding: .7rem 1rem; border: 1px solid var(--border); max-width: 62ch; }
+  .aviso { font-size: 14px; line-height: 1.6; border-radius: var(--radius); padding: .7rem 1rem; border: 1px solid var(--border); }
   .aviso.hidden { display: none; }
   .aviso.error { border-color: var(--danger); border-left: 3px solid var(--danger); color: var(--danger); background: rgba(192,57,43,.06); }
   .aviso.ok { border-color: var(--success); border-left: 3px solid var(--success); color: var(--success); background: var(--accent-veil); }
@@ -468,7 +470,7 @@
             </div>
             <div class="field">
               <label>Nacionalidad</label>
-              <input type="text" name="admin_tit_ext_nacionalidad" value="Argentina">
+              <input type="text" name="admin_tit_ext_nacionalidad" value="Argentina" data-autocompletado>
             </div>
             <div class="field">
               <label>Profesión u ocupación</label>
@@ -532,7 +534,7 @@
             </div>
             <div class="field">
               <label>Nacionalidad</label>
-              <input type="text" name="admin_sup_ext_nacionalidad" value="Argentina">
+              <input type="text" name="admin_sup_ext_nacionalidad" value="Argentina" data-autocompletado>
             </div>
             <div class="field">
               <label>Profesión u ocupación</label>
@@ -680,7 +682,7 @@
       </div>
       <div class="firma-campo">
         <label>Fecha</label>
-        <input type="text" name="firma_fecha" id="firmaFecha" readonly>
+        <input type="text" name="firma_fecha" id="firmaFecha" data-autocompletado readonly>
       </div>
     </div>
   </div>
@@ -793,7 +795,7 @@ function cardSocio(n) {
       </div>
       <div class="field">
         <label>Nacionalidad *</label>
-        <input type="text" name="socio_${n}_nacionalidad" data-campo="nacionalidad" value="Argentina" required>
+        <input type="text" name="socio_${n}_nacionalidad" data-campo="nacionalidad" value="Argentina" data-autocompletado required>
       </div>
     </div>
 
@@ -1195,13 +1197,37 @@ function toggleSection(btn, event) {
   btn.setAttribute('aria-expanded', String(abierta));
 }
 
+/* El progreso mide lo que falta que complete el cliente, no cuántos campos tiene
+   el HTML. Quedan afuera:
+
+   - Los de un bloque condicional cerrado (persona no socia). Son ~20 campos que
+     en el caso normal nunca se completan: contarlos dejaba el formulario entero
+     en 70% con todo cargado, y la barra nunca llegaba a 100.
+   - Los que el formulario resuelve solo — la nacionalidad precargada y la fecha
+     de firma. Estaban del lado de "completos" desde el principio, así que la
+     barra arrancaba en 7% sin que nadie hubiera escrito nada.
+
+   Un campo excluido del numerador tiene que salir también del denominador, o el
+   100% se vuelve inalcanzable. */
+function campoCuentaParaProgreso(el) {
+  const cond = el.closest('.conditional');
+  if (cond && !cond.classList.contains('visible')) return false;
+  return el.dataset.autocompletado === undefined;
+}
+
 function actualizarProgreso() {
   const form = document.getElementById('mainForm');
   const inputs = form.querySelectorAll('input[type=text],input[type=email],input[type=date],input[type=number],textarea,select');
   const radios = {};
-  form.querySelectorAll('input[type=radio]').forEach(r => { radios[r.name] = radios[r.name] || r.checked; });
+  form.querySelectorAll('input[type=radio]').forEach(r => {
+    if (!campoCuentaParaProgreso(r)) return;
+    radios[r.name] = radios[r.name] || r.checked;
+  });
   let total = 0, filled = 0;
-  inputs.forEach(i => { total++; if (i.value.trim()) filled++; });
+  inputs.forEach(i => {
+    if (!campoCuentaParaProgreso(i)) return;
+    total++; if (i.value.trim()) filled++;
+  });
   Object.keys(radios).forEach(k => { total++; if (radios[k]) filled++; });
   const pct = total > 0 ? Math.round(filled / total * 100) : 0;
   document.getElementById('progressBar').style.width = pct + '%';
