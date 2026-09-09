@@ -1,7 +1,8 @@
 # Formularios DDJJ — Lucci & Asociados
 
 Cuestionarios HTML autocontenidos que los clientes completan para que el estudio
-liquide impuestos en ARCA. **Relevan datos, no liquidan.**
+liquide impuestos en ARCA o haga un trámite. **Relevan datos, no liquidan ni
+constituyen nada.**
 
 **Se trabaja acá.** Este repo tiene los HTML, git y el historial. Las specs, los
 prompts de diseño y los workflows de n8n viven en `Ecosistema/formularios-dev/`.
@@ -12,6 +13,7 @@ prompts de diseño y los workflows de n8n viven en `Ecosistema/formularios-dev/`
 | `/mono/` | Inscripción Monotributo |
 | `/bp/` | Bienes Personales (Ley 23.966) |
 | `/iigg/` | Ganancias Personas Humanas (Ley 20.628) |
+| `/sas/` | Constitución de SAS — societario, no impositivo |
 
 Deploy: GitHub Pages desde `main` → **formularios.estudiolucci.com.ar**.
 Push a `main` publica; el build tarda ~50s.
@@ -113,6 +115,40 @@ seco. Trabajan por selector, no con reemplazos globales: `iigg` tiene un bloque
 |---|---|
 | `migrar_tema_claro.py` | Migra la paleta al tema claro |
 | `mejorar_titulos.py` | Escala tipográfica y acordeón accesible |
+
+---
+
+## `/sas/` — lo que no tienen los otros tres
+
+Es el único que valida **entre** campos, y por eso su JS no se parece al de los
+demás. Tres reglas que se hacen cumplir en vivo y bloquean el envío:
+
+- **Las participaciones suman 100.** El panel de reparto muestra cuánto falta o
+  sobra, y con el capital cargado, cuántos pesos le tocan a cada socio.
+- **El suplente no puede ser titular.** La designación de suplente es obligatoria,
+  así que con un único titular el suplente tiene que ser otra persona.
+- **El capital contra el mínimo legal**, que es `CAPITAL_MINIMO` — un solo objeto
+  con `monto`, `referencia` y `vigencia`. Son 2 SMVM y **se mueve varias veces al
+  año**: el formulario muestra la fecha desde la que rige en vez de afirmar el
+  número a secas, y avisa que se confirme si pasaron meses. Al actualizarlo, tocar
+  sólo esa constante — está en el XLSX exportado también, para que el expediente
+  registre contra qué piso se decidió.
+
+Los administradores se derivan de los socios cargados: los checkboxes de titular y
+el select de suplente se repueblan al escribir un nombre. El estado se guarda por
+**índice** (`admin_titular_socio_N`), no por nombre, para que sobreviva a que el
+socio siga tipeando.
+
+Los socios son tarjetas dinámicas hasta **5** (`MAX_SOCIOS`), que es el tope de
+columnas de la Sheet. Al eliminar uno la lista se **renumera**: se lee el DOM por
+`data-campo`, se reconstruye y nunca quedan huecos tipo `socio_1` + `socio_3`.
+Subir el tope sin correr `sync-headers.py` hace que el socio 6 se descarte en
+silencio.
+
+> La conformidad de este formulario **no cita el Art. 11 de la Ley 11.683**, como
+> sí hacen los otros tres. Esa norma es de declaraciones juradas impositivas y acá
+> no aplica: el texto declara veracidad de los datos y su transcripción al
+> instrumento constitutivo. Copiar la conformidad de otro formulario lo rompe.
 
 ---
 
