@@ -84,7 +84,7 @@
   /* INTRO */
   .intro-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
   .intro-box h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
-  .intro-box p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 62ch; font-weight: 400; }
+  .intro-box p { color: var(--muted); font-size: 14px; line-height: 1.7; font-weight: 400; }
   .intro-box .legal { margin-top: .85rem; padding-top: .85rem; border-top: 1px solid var(--border); font-size: 11px; letter-spacing: .04em; }
 
   /* BLOCK SEPARATOR */
@@ -198,7 +198,7 @@
     padding: .85rem 1.1rem;
     font-size: 14px;
     color: var(--muted);
-    line-height: 1.65; max-width: 62ch;
+    line-height: 1.65;
   }
   .nota strong { color: var(--text); font-weight: 500; }
 
@@ -280,7 +280,7 @@
   /* FIRMA */
   .firma-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-top: 2rem; }
   .firma-box h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
-  .firma-box p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 62ch; margin-bottom: 1rem; font-weight: 400; }
+  .firma-box p { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 1rem; font-weight: 400; }
   .firma-line { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
   .firma-campo { flex: 1; min-width: 160px; }
   .firma-campo label { font-size: 12px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; display: block; margin-bottom: .3rem; font-weight: 400; }
@@ -1176,7 +1176,7 @@
       </div>
       <div class="firma-campo">
         <label>Fecha</label>
-        <input type="text" name="firma_fecha" id="firmaFecha" readonly>
+        <input data-autocompletado type="text" name="firma_fecha" id="firmaFecha" readonly>
       </div>
     </div>
   </div>
@@ -1358,12 +1358,30 @@ function restaurar() {
 }
 
 /* ---- Progreso ---- */
+/* Solo cuentan para el progreso los campos que el cliente tiene que completar.
+   Quedan afuera los de un bloque de reveal cerrado —conviven dos mecanismos en
+   el repo: .conditional sin .visible, y .reveal-slot con display:none— y los que
+   el formulario resuelve solo (data-autocompletado). Lo excluido sale del
+   numerador y del denominador: si saliera de uno solo, el 100% no se alcanza. */
+function campoCuentaParaProgreso(el) {
+  if (el.dataset && el.dataset.autocompletado !== undefined) return false;
+  var cond = el.closest('.conditional');
+  if (cond && !cond.classList.contains('visible')) return false;
+  var slot = el.closest('.reveal-slot');
+  while (slot) {
+    if (slot.style.display === 'none') return false;
+    slot = slot.parentElement ? slot.parentElement.closest('.reveal-slot') : null;
+  }
+  return true;
+}
+
 function actualizarProgreso() {
   const form = document.getElementById('mainForm');
   const seen = new Set();
   let total = 0, completos = 0;
   for (const el of form.elements) {
     if (!el.name || seen.has(el.name)) continue;
+    if (!campoCuentaParaProgreso(el)) continue;
     if (el.type === 'radio') {
       seen.add(el.name);
       total++;
