@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Constitución de SAS — Lucci & Asociados</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+
+<style>
+  :root {
+    /* Banda superior — queda oscura, igual que el nav de estudiolucci.com.ar */
+    --navy:       #162032;
+    --navy-text:  #EEEEE8;
+    --navy-muted: #b4b4ac;
+    --navy-border: rgba(255,255,255,0.07);
+
+    /* Cuerpo claro — tokens de pagina-web/app/globals.css (.theme-light) */
+    --bg:         #F4F2EC;
+    --card:       #FBFAF6;
+    --card-hover: #EFEBE3;
+    --surface:    #EFECE4;
+    --text:       #16202F;
+    --muted:      #5A6472;
+    --border:     rgba(22,32,47,0.10);
+    --border2:    rgba(22,32,47,0.16);
+    --accent:     #00C896;
+    --accent-text: #007A5E;
+
+    /* Propios del formulario — la web no tiene campos, estos no existen allá */
+    --border-input: #7a7e84;
+    --placeholder:  #5A6472;
+    --mid:          #7a7e84;
+    --danger:       #c0392b;
+    --success:      #007A5E;
+    --accent-veil:  rgba(0,122,94,.07);
+
+    --radius:  6px;
+    --serif:   'Spectral', Georgia, serif;
+    --sans:    'Outfit', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* STICKY TOP (wraps header + progress) */
+  .sticky-top { position: sticky; top: 0; z-index: 100; }
+
+  /* HEADER */
+  .site-header {
+    background: var(--navy);
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid var(--navy-border);
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .site-header a { display: flex; align-items: center; gap: 1.25rem; text-decoration: none; flex: 1; }
+  .site-header img { width: 48px; height: 48px; object-fit: contain; }
+  .header-text h1 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; color: var(--navy-text); letter-spacing: .01em; }
+  .header-text p { font-size: 13px; color: var(--navy-muted); margin-top: 2px; letter-spacing: .04em; font-weight: 400; }
+
+  /* PROGRESS */
+  .progress-wrap { background: var(--navy); padding: .6rem 2rem; border-bottom: 1px solid var(--navy-border); display: flex; align-items: center; gap: 1rem; }
+  .progress-track { flex: 1; height: 3px; background: rgba(255,255,255,0.12); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width .4s ease; }
+  .progress-text { font-size: 12px; color: var(--navy-muted); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; font-weight: 400; }
+
+  /* SHELL */
+  .form-shell { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+
+  /* INTRO */
+  .intro-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+  .intro-box h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
+  .intro-box p { color: var(--muted); font-size: 14px; line-height: 1.7; font-weight: 400; max-width: 62ch; }
+
+  /* SECTION */
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1rem; overflow: hidden; }
+  .section-head { margin: 0; font-size: inherit; font-weight: inherit; }
+  .section-head button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background .15s;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    color: inherit;
+    text-align: left;
+  }
+  .section-head button:hover { background: var(--card-hover); }
+  .section-head button:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
+  .section-title-wrap { display: flex; align-items: center; gap: .75rem; min-width: 0; flex: 1; }
+  .section-letter { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--muted); width: 22px; flex-shrink: 0; }
+  .section-title { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--text); min-width: 0; }
+  .section-badge { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border2); color: var(--muted); flex-shrink: 0; font-weight: 400; }
+  .section-toggle { color: var(--muted); font-size: 14px; transition: transform .25s; flex-shrink: 0; }
+  .section-toggle.open { transform: rotate(180deg); }
+  .section-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; border-top: 1px solid var(--border); }
+  .section-body.hidden { display: none; }
+
+  /* FIELDS */
+  .field { display: flex; flex-direction: column; gap: .4rem; }
+  .field label { font-size: 15px; font-weight: 400; color: var(--text); line-height: 1.5; overflow-wrap: break-word; }
+  .field .hint { font-size: 14px; color: var(--muted); margin-top: -2px; overflow-wrap: break-word; font-weight: 400; max-width: 62ch; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  /* Los controles se apoyan en el pie de la fila: si una columna tiene hint (o un
+     label que envuelve) y la otra no, input y select igual quedan a la misma altura. */
+  .field-grid > .field > :is(input, select, textarea, .radio-group):last-child { margin-top: auto; }
+  @media(max-width:520px) { .field-grid { grid-template-columns: 1fr; } }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="date"],
+  textarea,
+  select {
+    background: var(--surface);
+    border: 1px solid var(--border-input);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 400;
+    padding: .7rem .9rem;
+    width: 100%;
+    transition: border-color .15s, background .15s;
+    outline: none;
+  }
+  textarea { min-height: 60px; resize: vertical; line-height: 1.55; }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent-text); box-shadow: 0 0 0 2px rgba(0,122,94,.30); background: #FFFFFF; }
+  input::placeholder, textarea::placeholder { color: var(--placeholder); font-weight: 400; }
+  input[type=date] { color-scheme: light; }
+  select { appearance: none; -webkit-appearance: none; -moz-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235A6472' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .85rem center; padding-right: 2.4rem; }
+  select option { background: var(--card); color: var(--text); }
+
+  /* RADIO/CHECK */
+  .radio-group, .check-group { display: flex; flex-direction: column; gap: .4rem; }
+  .radio-group.inline, .check-group.inline { flex-direction: row; flex-wrap: wrap; gap: .5rem; }
+  .radio-option, .check-option {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .8rem;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all .15s;
+    font-size: 14px;
+  }
+  .radio-option:hover, .check-option:hover { border-color: var(--mid); background: var(--card-hover); }
+  .radio-option input, .check-option input { accent-color: var(--accent-text); }
+  .radio-option:has(input:checked), .check-option:has(input:checked) { border-color: var(--accent-text); background: var(--accent-veil); }
+
+  .sub-section { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+  .sub-title { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-bottom: .4rem; border-bottom: 1px solid var(--border); }
+
+  .jurisdiccion-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+  .jurisdiccion-header { display: flex; align-items: center; justify-content: space-between; }
+  .jurisdiccion-num { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-text); }
+  .btn-remove { background: transparent; border: 1px solid var(--border2); border-radius: var(--radius); color: var(--muted); font-size: 12px; padding: 2px 10px; cursor: pointer; font-family: var(--sans); transition: all .2s; }
+  .btn-remove:hover { border-color: var(--danger); color: var(--danger); }
+
+  .conditional { display: none; }
+  .conditional.visible { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  /* NOTA */
+  .nota {
+    background: var(--accent-veil);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-text);
+    border-radius: var(--radius);
+    padding: .85rem 1.1rem;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 62ch;
+  }
+  .nota strong { color: var(--text); font-weight: 500; }
+  .nota a { color: var(--accent-text); text-decoration: underline; }
+  .nota a:hover { text-decoration: underline; }
+
+  /* BUTTONS */
+  .btn-row { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .btn {
+    padding: .75rem 1.5rem;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: .03em;
+    border-radius: var(--radius);
+    border: 1px solid var(--mid);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .btn:hover { background: var(--card-hover); border-color: var(--text); }
+  .btn-primary { background: var(--accent-text); color: #FBFAF6; border-color: var(--accent-text); }
+  .btn-primary:hover { background: #00624B; border-color: #00624B; }
+  .btn-add { background: transparent; border: 1px dashed var(--mid); color: var(--accent-text); font-size: 14px; padding: .5rem 1rem; border-radius: var(--radius); cursor: pointer; font-family: var(--sans); transition: all .2s; width: 100%; text-align: center; }
+  .btn-add:hover { border-color: var(--accent-text); background: var(--accent-veil); }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 1.5rem; right: 1rem; left: 1rem; background: var(--card); border: 1px solid var(--border2); border-radius: var(--radius); padding: .75rem 1.25rem; font-size: 14px; color: var(--text); z-index: 999; opacity: 0; transform: translateY(8px); transition: all .3s; max-width: 300px; margin-left: auto; pointer-events: none; box-shadow: 0 4px 16px rgba(22,32,47,.14); }
+  .toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .toast.success { border-color: var(--success); color: var(--success); }
+  .toast.error { border-color: var(--danger); color: var(--danger); }
+
+  .autosave { font-size: 12px; color: var(--muted); text-align: right; margin-top: -.5rem; margin-bottom: .5rem; height: 16px; }
+
+  /* FIRMA */
+  .firma-box h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--text); margin-bottom: .75rem; }
+  .firma-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-top: 2rem; }
+  .firma-box p { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 1rem; font-weight: 400; max-width: 62ch; }
+  .firma-line { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
+  .firma-campo { flex: 1; min-width: 160px; }
+  .firma-campo label { font-size: 12px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; display: block; margin-bottom: .3rem; font-weight: 400; }
+  .firma-campo input { background: transparent; border: none; border-bottom: 1px solid var(--border-input); border-radius: 0; color: var(--text); width: 100%; padding: .3rem 0; font-family: var(--sans); font-size: 14px; outline: none; }
+  .firma-campo input:focus { border-bottom-color: var(--accent-text); box-shadow: 0 2px 0 0 var(--accent-text); }
+
+  @media(max-width:600px) {
+    .site-header { padding: 0; }
+    .site-header a { padding: 1rem !important; gap: 1rem !important; }
+    .progress-wrap { padding: .6rem 1rem; }
+    .form-shell { padding: 1.5rem 1rem 4rem; }
+    .intro-box { padding: 1.25rem 1rem; }
+    .section-head button { padding: .85rem 1rem; }
+    .section-body { padding: 1rem; }
+    .sub-section { padding: .85rem 1rem; }
+    .btn-row { flex-direction: column; }
+    .btn { width: 100%; text-align: center; }
+    .firma-line { flex-direction: column; gap: 1rem; }
+  }
+
+  /* ---- Propios de SAS: no existen en mono/bp/iigg ---- */
+
+  /* Tarjeta de socio — misma base que .jurisdiccion-item, con cabecera propia */
+  .socio-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+  .socio-header { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+  .socio-num { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-text); }
+
+  /* Panel de reparto del capital */
+  .reparto { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: .6rem; }
+  .reparto-fila { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font-size: 14px; }
+  .reparto-fila .nombre { color: var(--text); overflow-wrap: anywhere; }
+  .reparto-fila .valor { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .reparto-total { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font-size: 14px; padding-top: .6rem; border-top: 1px solid var(--border); }
+  .reparto-total .valor { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .reparto-total.ok .valor { color: var(--success); }
+  .reparto-total.mal .valor { color: var(--danger); }
+
+  /* Aviso de validación en vivo. Reservado en el flujo, no flotante:
+     un error que empuja el contenido es peor que uno que ya tenía su lugar. */
+  .aviso { font-size: 14px; line-height: 1.6; border-radius: var(--radius); padding: .7rem 1rem; border: 1px solid var(--border); max-width: 62ch; }
+  .aviso.hidden { display: none; }
+  .aviso.error { border-color: var(--danger); border-left: 3px solid var(--danger); color: var(--danger); background: rgba(192,57,43,.06); }
+  .aviso.ok { border-color: var(--success); border-left: 3px solid var(--success); color: var(--success); background: var(--accent-veil); }
+
+  /* Lista de titulares: checkboxes que se repueblan con los socios cargados */
+  .admin-lista { display: flex; flex-direction: column; gap: .4rem; }
+  .admin-lista .check-option { justify-content: flex-start; }
+  .admin-vacio { font-size: 14px; color: var(--muted); font-style: italic; }
+
+  /* El monto de capital se lee mejor en tabular */
+  input.monto { font-variant-numeric: tabular-nums; }
+
+</style>
+</head>
+<body>
+
+<div class="sticky-top">
+<header class="site-header"><a href="https://estudiolucci.com.ar" target="_blank">
+    <img src="data:image/jpeg;base64,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" alt="Lucci & Asociados">
+    <div class="header-text">
+      <h1>Lucci &amp; Asociados</h1>
+      <p>Constitucion de SAS</p>
+    </div>
+</a></header>
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+  <span class="progress-text" id="progressLabel">0%</span>
+</div>
+</div>
+
+<div class="form-shell">
+  <div class="intro-box">
+    <h2>Constitución de SAS — Relevamiento de datos</h2>
+    <p>Con esta información armamos el instrumento constitutivo de la Sociedad por Acciones Simplificada. Los datos van a un documento legal, así que conviene copiarlos del DNI y de la constancia de CUIT en lugar de escribirlos de memoria. Se guarda solo en tu navegador mientras lo completás: podés cerrarlo y seguir después. Ante cualquier duda dejá el campo en blanco y lo coordinamos.</p>
+  </div>
+
+  <div class="autosave" id="autosaveIndicator"></div>
+
+  <form id="mainForm" novalidate>
+
+  <!-- A. LA SOCIEDAD -->
+  <div class="section">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-sas-1" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">A</span>
+          <span class="section-title">La sociedad</span>
+        </div>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-sas-1" class="section-body">
+      <div class="nota">
+        La denominación tiene que estar disponible en el registro para poder reservarla. <strong>Pedimos tres opciones en orden de preferencia</strong> para no frenar el trámite si la primera ya está tomada.
+      </div>
+      <div class="field">
+        <label>Denominación — primera opción *</label>
+        <span class="hint">Sin el “SAS” al final: lo agregamos nosotros</span>
+        <input type="text" name="soc_denominacion_1" placeholder="Ej: Mundo Ecommerce" required>
+      </div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Denominación — segunda opción</label>
+          <input type="text" name="soc_denominacion_2">
+        </div>
+        <div class="field">
+          <label>Denominación — tercera opción</label>
+          <input type="text" name="soc_denominacion_3">
+        </div>
+      </div>
+      <div class="field">
+        <label>Actividad principal de la sociedad *</label>
+        <span class="hint">En una o dos líneas, qué va a hacer la empresa. El objeto social formal lo redactamos nosotros.</span>
+        <textarea name="soc_objeto" placeholder="Ej: Venta al por mayor de artículos de perfumería y cosmética" required></textarea>
+      </div>
+      <div class="field">
+        <label>Jurisdicción donde se va a inscribir *</label>
+        <span class="hint">Determina el registro que interviene y los requisitos del trámite</span>
+        <select name="soc_jurisdiccion" required>
+          <option value="">— seleccionar —</option>
+          <option>Provincia de Buenos Aires (DPPJ)</option>
+          <option>CABA (IGJ)</option>
+          <option>Otra provincia</option>
+          <option>No sé / a definir con el estudio</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- B. SOCIOS -->
+  <div class="section">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-sas-2" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">B</span>
+          <span class="section-title">Socios</span>
+        </div>
+        <span class="section-badge" id="badgeSocios">0 socios</span>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-sas-2" class="section-body">
+      <div class="nota">
+        Los datos de cada socio se transcriben tal cual al instrumento constitutivo. <strong>Un error de tipeo en el CUIT o en el domicilio se arrastra a la escritura</strong>, así que conviene copiarlos del documento.
+      </div>
+
+      <div id="sociosContainer" style="display:flex;flex-direction:column;gap:1rem"></div>
+      <button type="button" class="btn-add" onclick="agregarSocio()">+ Agregar otro socio</button>
+    </div>
+  </div>
+
+  <!-- C. CAPITAL SOCIAL -->
+  <div class="section">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-sas-3" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">C</span>
+          <span class="section-title">Capital social</span>
+        </div>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-sas-3" class="section-body">
+      <div class="nota" id="notaCapitalMinimo"></div>
+
+      <div class="field">
+        <label>Monto del capital social *</label>
+        <span class="hint">En pesos. Escribí solo números; el separador de miles se agrega solo.</span>
+        <input type="text" class="monto" name="capital_monto" id="capitalMonto" inputmode="numeric" placeholder="Ej: 800.000" required>
+      </div>
+
+      <div class="aviso hidden" id="avisoCapital"></div>
+
+      <div class="sub-section">
+        <div class="sub-title">Reparto entre los socios</div>
+        <p class="hint" style="margin:0">El porcentaje de cada socio se carga en su tarjeta, en la sección anterior. Acá se ve cómo queda el reparto.</p>
+        <div class="reparto" id="repartoPanel"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D. ADMINISTRADORES -->
+  <div class="section">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-sas-4" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">D</span>
+          <span class="section-title">Administradores</span>
+        </div>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-sas-4" class="section-body">
+      <div class="nota">
+        El <strong>administrador titular</strong> es el representante legal: gestiona la sociedad y toma las decisiones. Puede ser uno de los socios o los dos.<br><br>
+        El <strong>administrador suplente</strong> reemplaza al titular solo si éste no puede ejercer por un motivo especial —fallecimiento, incapacidad—. Mientras eso no ocurra, el representante legal sigue siendo el titular. La designación de un suplente es obligatoria.<br><br>
+        Si hay un <strong>único titular</strong>, el suplente tiene que ser otra persona: no puede ser titular y suplente al mismo tiempo.
+      </div>
+
+      <div class="field">
+        <label>Administrador/es titular/es *</label>
+        <span class="hint">Marcá uno o más. La lista se arma con los socios que cargaste arriba.</span>
+        <div class="admin-lista" id="titularesLista"></div>
+      </div>
+
+      <div class="conditional" id="cond_titular_externo">
+        <div class="sub-section">
+          <div class="sub-title">Datos del titular que no es socio</div>
+          <div class="field-grid">
+            <div class="field">
+              <label>Apellido y nombres completos</label>
+              <input type="text" name="admin_tit_ext_nombre">
+            </div>
+            <div class="field">
+              <label>CUIT / CUIL</label>
+              <input type="text" name="admin_tit_ext_cuit" placeholder="20-00000000-0" maxlength="13" oninput="mascaraCuit(this)">
+            </div>
+            <div class="field">
+              <label>DNI</label>
+              <input type="text" name="admin_tit_ext_dni" maxlength="10">
+            </div>
+            <div class="field">
+              <label>Fecha de nacimiento</label>
+              <input type="date" name="admin_tit_ext_fecha_nac">
+            </div>
+            <div class="field">
+              <label>Estado civil</label>
+              <select name="admin_tit_ext_estado_civil">
+                <option value="">— seleccionar —</option>
+                <option>Soltero/a</option>
+                <option>Casado/a</option>
+                <option>Unión convivencial</option>
+                <option>Divorciado/a</option>
+                <option>Viudo/a</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Nacionalidad</label>
+              <input type="text" name="admin_tit_ext_nacionalidad" value="Argentina">
+            </div>
+            <div class="field">
+              <label>Profesión u ocupación</label>
+              <input type="text" name="admin_tit_ext_profesion">
+            </div>
+            <div class="field">
+              <label>Teléfono celular</label>
+              <input type="text" name="admin_tit_ext_celular">
+            </div>
+          </div>
+          <div class="field">
+            <label>Domicilio real completo</label>
+            <span class="hint">Calle, número, piso, departamento, localidad y provincia</span>
+            <input type="text" name="admin_tit_ext_domicilio">
+          </div>
+          <div class="field">
+            <label>E-mail</label>
+            <input type="email" name="admin_tit_ext_email">
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Administrador suplente *</label>
+        <span class="hint">Uno solo. No puede ser la misma persona que el titular, si el titular es uno solo.</span>
+        <select name="admin_suplente_ref" id="suplenteSelect"></select>
+      </div>
+
+      <div class="aviso hidden" id="avisoAdmin"></div>
+
+      <div class="conditional" id="cond_suplente_externo">
+        <div class="sub-section">
+          <div class="sub-title">Datos del suplente que no es socio</div>
+          <div class="field-grid">
+            <div class="field">
+              <label>Apellido y nombres completos</label>
+              <input type="text" name="admin_sup_ext_nombre">
+            </div>
+            <div class="field">
+              <label>CUIT / CUIL</label>
+              <input type="text" name="admin_sup_ext_cuit" placeholder="20-00000000-0" maxlength="13" oninput="mascaraCuit(this)">
+            </div>
+            <div class="field">
+              <label>DNI</label>
+              <input type="text" name="admin_sup_ext_dni" maxlength="10">
+            </div>
+            <div class="field">
+              <label>Fecha de nacimiento</label>
+              <input type="date" name="admin_sup_ext_fecha_nac">
+            </div>
+            <div class="field">
+              <label>Estado civil</label>
+              <select name="admin_sup_ext_estado_civil">
+                <option value="">— seleccionar —</option>
+                <option>Soltero/a</option>
+                <option>Casado/a</option>
+                <option>Unión convivencial</option>
+                <option>Divorciado/a</option>
+                <option>Viudo/a</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Nacionalidad</label>
+              <input type="text" name="admin_sup_ext_nacionalidad" value="Argentina">
+            </div>
+            <div class="field">
+              <label>Profesión u ocupación</label>
+              <input type="text" name="admin_sup_ext_profesion">
+            </div>
+            <div class="field">
+              <label>Teléfono celular</label>
+              <input type="text" name="admin_sup_ext_celular">
+            </div>
+          </div>
+          <div class="field">
+            <label>Domicilio real completo</label>
+            <span class="hint">Calle, número, piso, departamento, localidad y provincia</span>
+            <input type="text" name="admin_sup_ext_domicilio">
+          </div>
+          <div class="field">
+            <label>E-mail</label>
+            <input type="email" name="admin_sup_ext_email">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E. SEDE SOCIAL -->
+  <div class="section">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-sas-5" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">E</span>
+          <span class="section-title">Sede social</span>
+        </div>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-sas-5" class="section-body">
+      <div class="nota">
+        Es el domicilio donde la sociedad recibe las notificaciones oficiales. <strong>Tiene que estar en la jurisdicción donde se inscribe</strong> y conviene que sea un lugar donde efectivamente llegue el correo: una notificación enviada a la sede se da por recibida aunque nadie la haya visto.
+      </div>
+
+      <div class="field">
+        <label class="check-option" style="align-items:flex-start">
+          <input type="checkbox" id="sedeIgualSocio" onchange="copiarDomicilioSocio(this)">
+          Usar el domicilio real del primer socio
+        </label>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Calle *</label>
+          <input type="text" name="sede_calle" required>
+        </div>
+        <div class="field">
+          <label>Número *</label>
+          <input type="text" name="sede_numero" required>
+        </div>
+        <div class="field">
+          <label>Piso</label>
+          <input type="text" name="sede_piso" placeholder="Ej: 3">
+        </div>
+        <div class="field">
+          <label>Departamento</label>
+          <input type="text" name="sede_depto" placeholder="Ej: B">
+        </div>
+        <div class="field">
+          <label>Código postal</label>
+          <input type="text" name="sede_cp" maxlength="8">
+        </div>
+        <div class="field">
+          <label>Localidad *</label>
+          <input type="text" name="sede_localidad" required>
+        </div>
+      </div>
+      <div class="field">
+        <label>Provincia *</label>
+        <select name="sede_provincia" id="sedeProvincia" required>
+          <option value="">— seleccionar —</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- F. CIERRE DE EJERCICIO -->
+  <div class="section">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="true" aria-controls="sec-sas-6" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">F</span>
+          <span class="section-title">Cierre de ejercicio</span>
+        </div>
+        <span class="section-toggle open">▾</span>
+      </button>
+    </h3>
+    <div id="sec-sas-6" class="section-body">
+      <div class="nota">
+        Es la fecha en que la sociedad cierra su balance cada año. Lo usual es el <strong>31/12</strong>, pero elegir otra fecha permite que el balance caiga después de la temporada fuerte del negocio y no en el medio. Si tu actividad tiene una estacionalidad marcada, conviene conversarlo.
+      </div>
+      <div class="field">
+        <label>Fecha de cierre *</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="31/12" required> 31 de diciembre <span style="color:var(--muted)">— lo usual</span></label>
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="31/03"> 31 de marzo</label>
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="30/06"> 30 de junio</label>
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="31/10"> 31 de octubre</label>
+          <label class="radio-option"><input type="radio" name="cierre_ejercicio" value="A definir"> Prefiero conversarlo con el estudio</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- G. OBSERVACIONES -->
+  <div class="section">
+    <h3 class="section-head">
+      <button type="button" aria-expanded="false" aria-controls="sec-sas-7" onclick="toggleSection(this, event)">
+        <div class="section-title-wrap">
+          <span class="section-letter">G</span>
+          <span class="section-title">Observaciones</span>
+        </div>
+        <span class="section-badge">opcional</span>
+        <span class="section-toggle">▾</span>
+      </button>
+    </h3>
+    <div id="sec-sas-7" class="section-body hidden">
+      <div class="field">
+        <label>Información adicional</label>
+        <span class="hint">Cualquier dato relevante que no haya sido contemplado en el formulario</span>
+        <textarea name="observaciones" placeholder="Dejar en blanco si no aplica"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIRMA -->
+  <div class="firma-box">
+    <h3>Conformidad</h3>
+    <div class="field" style="margin-bottom:1rem">
+      <label class="check-option" style="font-size:13px;color:var(--muted);line-height:1.7;align-items:flex-start">
+        <input type="checkbox" name="conformidad" id="conformidadCheck" value="Si" style="margin-top:4px" required>
+        Declaro que los datos consignados en este formulario son completos y veraces, y que estoy facultado/a para informarlos en nombre de las personas mencionadas. Entiendo que serán transcriptos al instrumento constitutivo de la sociedad y asumo responsabilidad por eventuales omisiones o datos incorrectos. Autorizo a Lucci &amp; Asociados a utilizarlos para la constitución de la SAS y los trámites asociados.
+      </label>
+    </div>
+    <div class="firma-line">
+      <div class="firma-campo">
+        <label>Nombre completo</label>
+        <input type="text" name="firma_nombre" required>
+      </div>
+      <div class="firma-campo">
+        <label>Fecha</label>
+        <input type="text" name="firma_fecha" id="firmaFecha" readonly>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button type="button" class="btn btn-primary" onclick="enviarRespuestas()">Enviar respuestas al estudio</button>
+    <button type="button" class="btn" onclick="exportarXLSX()">Descargar Excel (.xlsx)</button>
+    <button type="button" class="btn" onclick="guardarProgreso()">Guardar progreso</button>
+    <button type="button" class="btn" onclick="limpiarFormulario()">Limpiar formulario</button>
+  </div>
+  <div id="enviadoIndicator" style="font-size:12px;color:var(--muted);margin-top:.5rem;display:none;"></div>
+
+  </form>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+const PROVINCIAS = ['Buenos Aires','CABA','Catamarca','Chaco','Chubut','Córdoba','Corrientes','Entre Ríos','Formosa','Jujuy','La Pampa','La Rioja','Mendoza','Misiones','Neuquén','Río Negro','Salta','San Juan','San Luis','Santa Cruz','Santa Fe','Santiago del Estero','Tierra del Fuego','Tucumán'];
+
+/* El tope de socios es el contrato con la Google Sheet: hay columnas socio_1_* a
+   socio_5_*. Subirlo acá sin correr sync-headers.py hace que el socio 6 llegue al
+   webhook y se descarte en silencio. */
+const MAX_SOCIOS = 5;
+
+/* Capital mínimo legal — 2 SMVM. Un solo lugar, con su fecha al lado.
+   El SMVM lo fija el Consejo del Salario y se mueve varias veces al año: este
+   número envejece solo, y el formulario tiene que decir desde cuándo rige en
+   vez de afirmarlo como si fuera permanente. Al actualizarlo, tocar solo esto. */
+const CAPITAL_MINIMO = {
+  monto: 753200,
+  referencia: 'dos salarios mínimos vitales y móviles',
+  vigencia: 'septiembre de 2026'
+};
+
+const CAMPOS_SOCIO = ['nombre','cuit','dni','fecha_nac','estado_civil','conyuge','nacionalidad','profesion','dom_calle','dom_numero','dom_piso','dom_depto','dom_cp','dom_localidad','dom_provincia','email','celular','participacion'];
+
+const fmtMoneda = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 });
+const fmtMiles  = new Intl.NumberFormat('es-AR');
+
+/* ------------------------------------------------------------------ helpers */
+
+function mascaraCuit(el) {
+  let v = el.value.replace(/\D/g, '');
+  if (v.length > 2) v = v.slice(0,2) + '-' + v.slice(2);
+  if (v.length > 11) v = v.slice(0,11) + '-' + v.slice(11);
+  el.value = v.slice(0,13);
+}
+
+function mascaraMonto(el) {
+  const v = el.value.replace(/\D/g, '');
+  el.value = v ? fmtMiles.format(parseInt(v, 10)) : '';
+}
+
+function parseMonto(str) {
+  const v = (str || '').replace(/\D/g, '');
+  return v ? parseInt(v, 10) : 0;
+}
+
+function parsePct(str) {
+  const n = parseFloat(String(str || '').replace(',', '.'));
+  return isFinite(n) ? n : 0;
+}
+
+function fmtPct(n) {
+  return (Math.round(n * 100) / 100).toString().replace('.', ',');
+}
+
+/* ------------------------------------------------------------------- socios */
+
+let sociosCount = 0;
+
+function cardSocio(n) {
+  const div = document.createElement('div');
+  div.className = 'socio-item';
+  div.dataset.socio = n;
+  div.innerHTML = `
+    <div class="socio-header">
+      <span class="socio-num">Socio ${n}</span>
+      <button type="button" class="btn-remove" data-accion="eliminar">Eliminar</button>
+    </div>
+    <div class="field-grid">
+      <div class="field">
+        <label>Apellido y nombres completos *</label>
+        <input type="text" name="socio_${n}_nombre" data-campo="nombre" required>
+      </div>
+      <div class="field">
+        <label>CUIT / CUIL *</label>
+        <input type="text" name="socio_${n}_cuit" data-campo="cuit" placeholder="20-00000000-0" maxlength="13" required oninput="mascaraCuit(this)">
+      </div>
+      <div class="field">
+        <label>DNI</label>
+        <input type="text" name="socio_${n}_dni" data-campo="dni" maxlength="10">
+      </div>
+      <div class="field">
+        <label>Fecha de nacimiento</label>
+        <input type="date" name="socio_${n}_fecha_nac" data-campo="fecha_nac">
+      </div>
+      <div class="field">
+        <label>Estado civil *</label>
+        <select name="socio_${n}_estado_civil" data-campo="estado_civil" data-rol="estado-civil" required>
+          <option value="">— seleccionar —</option>
+          <option>Soltero/a</option>
+          <option>Casado/a</option>
+          <option>Unión convivencial</option>
+          <option>Divorciado/a</option>
+          <option>Viudo/a</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nacionalidad *</label>
+        <input type="text" name="socio_${n}_nacionalidad" data-campo="nacionalidad" value="Argentina" required>
+      </div>
+    </div>
+
+    <div class="conditional" data-rol="conyuge-wrap">
+      <div class="field">
+        <label>Apellido y nombres del cónyuge</label>
+        <span class="hint">El instrumento constitutivo lo consigna junto a los datos del socio</span>
+        <input type="text" name="socio_${n}_conyuge" data-campo="conyuge">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Profesión u ocupación *</label>
+      <input type="text" name="socio_${n}_profesion" data-campo="profesion" placeholder="Ej: Comerciante" required>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">Domicilio real</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Calle *</label>
+          <input type="text" name="socio_${n}_dom_calle" data-campo="dom_calle" required>
+        </div>
+        <div class="field">
+          <label>Número *</label>
+          <input type="text" name="socio_${n}_dom_numero" data-campo="dom_numero" required>
+        </div>
+        <div class="field">
+          <label>Piso</label>
+          <input type="text" name="socio_${n}_dom_piso" data-campo="dom_piso" placeholder="Ej: 3">
+        </div>
+        <div class="field">
+          <label>Departamento</label>
+          <input type="text" name="socio_${n}_dom_depto" data-campo="dom_depto" placeholder="Ej: B">
+        </div>
+        <div class="field">
+          <label>Código postal</label>
+          <input type="text" name="socio_${n}_dom_cp" data-campo="dom_cp" maxlength="8">
+        </div>
+        <div class="field">
+          <label>Localidad *</label>
+          <input type="text" name="socio_${n}_dom_localidad" data-campo="dom_localidad" required>
+        </div>
+      </div>
+      <div class="field">
+        <label>Provincia *</label>
+        <select name="socio_${n}_dom_provincia" data-campo="dom_provincia" data-rol="provincia" required>
+          <option value="">— seleccionar —</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-grid">
+      <div class="field">
+        <label>E-mail *</label>
+        <input type="email" name="socio_${n}_email" data-campo="email" required>
+      </div>
+      <div class="field">
+        <label>Teléfono celular *</label>
+        <input type="text" name="socio_${n}_celular" data-campo="celular" placeholder="Ej: 11 5555-5555" required>
+      </div>
+      <div class="field">
+        <label>Porcentaje del capital *</label>
+        <span class="hint">Entre todos los socios tiene que sumar 100</span>
+        <input type="text" name="socio_${n}_participacion" data-campo="participacion" inputmode="decimal" placeholder="Ej: 50">
+      </div>
+    </div>
+  `;
+
+  poblarProvincias(div.querySelector('[data-rol="provincia"]'));
+  div.querySelector('[data-accion="eliminar"]').addEventListener('click', () => eliminarSocio(n));
+  div.querySelector('[data-rol="estado-civil"]').addEventListener('change', e => toggleConyuge(e.target));
+  return div;
+}
+
+function poblarProvincias(sel) {
+  if (!sel) return;
+  PROVINCIAS.forEach(p => sel.add(new Option(p, p)));
+}
+
+function toggleConyuge(sel) {
+  const wrap = sel.closest('.socio-item').querySelector('[data-rol="conyuge-wrap"]');
+  wrap.classList.toggle('visible', sel.value === 'Casado/a');
+}
+
+/* Los socios se leen del DOM por data-campo, no por índice: así renumerar
+   después de eliminar uno es reconstruir la lista, y nunca quedan huecos
+   (socio_1 y socio_3 con el 2 vacío) llegando a la Sheet. */
+function leerSocios() {
+  const out = [];
+  document.querySelectorAll('#sociosContainer .socio-item').forEach(item => {
+    const o = {};
+    CAMPOS_SOCIO.forEach(c => {
+      const el = item.querySelector('[data-campo="' + c + '"]');
+      o[c] = el ? el.value : '';
+    });
+    out.push(o);
+  });
+  return out;
+}
+
+function renderSocios(lista) {
+  const cont = document.getElementById('sociosContainer');
+  cont.innerHTML = '';
+  lista.forEach((s, i) => {
+    const card = cardSocio(i + 1);
+    cont.appendChild(card);
+    CAMPOS_SOCIO.forEach(c => {
+      const el = card.querySelector('[data-campo="' + c + '"]');
+      if (el && s[c] !== undefined && s[c] !== null) el.value = s[c];
+    });
+    toggleConyuge(card.querySelector('[data-rol="estado-civil"]'));
+    // Con un solo socio no ofrecemos eliminarlo: una SAS sin socios no existe.
+    if (lista.length === 1) card.querySelector('[data-accion="eliminar"]').style.display = 'none';
+  });
+  sociosCount = lista.length;
+  document.getElementById('badgeSocios').textContent = lista.length === 1 ? '1 socio' : lista.length + ' socios';
+  const btnAdd = document.querySelector('#sec-sas-2 .btn-add');
+  btnAdd.style.display = lista.length >= MAX_SOCIOS ? 'none' : '';
+  refrescarDerivados();
+}
+
+function agregarSocio() {
+  const lista = leerSocios();
+  if (lista.length >= MAX_SOCIOS) {
+    mostrarToast('El formulario admite hasta ' + MAX_SOCIOS + ' socios. Si son más, escribinos y lo resolvemos aparte.', 'error');
+    return;
+  }
+  lista.push({ nacionalidad: 'Argentina' });
+  renderSocios(lista);
+  autoguardar();
+}
+
+function eliminarSocio(n) {
+  const lista = leerSocios();
+  if (lista.length <= 1) return;
+  const nombre = (lista[n - 1] && lista[n - 1].nombre || '').trim();
+  if (!confirm('¿Eliminar al socio ' + n + (nombre ? ' (' + nombre + ')' : '') + '?')) return;
+  lista.splice(n - 1, 1);
+  renderSocios(lista);
+  actualizarProgreso();
+  autoguardar();
+}
+
+/* --------------------------------------------------- capital y participación */
+
+function renderNotaCapital() {
+  document.getElementById('notaCapitalMinimo').innerHTML =
+    'El mínimo legal equivale a ' + CAPITAL_MINIMO.referencia + ': <strong>' +
+    fmtMoneda.format(CAPITAL_MINIMO.monto) + '</strong> a ' + CAPITAL_MINIMO.vigencia +
+    '. Ese piso se actualiza cada vez que se actualiza el salario mínimo, así que si pasaron varios meses desde que recibiste este formulario, confirmanos el valor vigente antes de cerrar el monto.';
+}
+
+function renderReparto() {
+  const socios = leerSocios();
+  const capital = parseMonto(document.getElementById('capitalMonto').value);
+  const panel = document.getElementById('repartoPanel');
+  panel.innerHTML = '';
+
+  let suma = 0;
+  socios.forEach((s, i) => {
+    const p = parsePct(s.participacion);
+    suma += p;
+
+    const fila = document.createElement('div');
+    fila.className = 'reparto-fila';
+
+    const nom = document.createElement('span');
+    nom.className = 'nombre';
+    nom.textContent = (s.nombre || '').trim() || ('Socio ' + (i + 1));
+
+    const val = document.createElement('span');
+    val.className = 'valor';
+    if (!p) val.textContent = 'sin porcentaje';
+    else val.textContent = fmtPct(p) + ' %' + (capital ? ' — ' + fmtMoneda.format(capital * p / 100) : '');
+
+    fila.append(nom, val);
+    panel.appendChild(fila);
+  });
+
+  const cerrado = Math.abs(suma - 100) < 0.01;
+  const total = document.createElement('div');
+  total.className = 'reparto-total ' + (cerrado ? 'ok' : 'mal');
+  const tl = document.createElement('span');
+  tl.textContent = 'Total';
+  const tv = document.createElement('span');
+  tv.className = 'valor';
+  if (cerrado) tv.textContent = '100 % ✓';
+  else if (suma < 100) tv.textContent = fmtPct(suma) + ' % — faltan ' + fmtPct(100 - suma) + ' %';
+  else tv.textContent = fmtPct(suma) + ' % — sobran ' + fmtPct(suma - 100) + ' %';
+  total.append(tl, tv);
+  panel.appendChild(total);
+
+  return cerrado;
+}
+
+function validarCapital() {
+  const el = document.getElementById('avisoCapital');
+  const monto = parseMonto(document.getElementById('capitalMonto').value);
+  if (!monto) { el.className = 'aviso hidden'; el.textContent = ''; return true; }
+  if (monto < CAPITAL_MINIMO.monto) {
+    el.className = 'aviso error';
+    el.textContent = 'El monto está por debajo del mínimo legal vigente a ' + CAPITAL_MINIMO.vigencia +
+      ' (' + fmtMoneda.format(CAPITAL_MINIMO.monto) + '). Podés enviarlo igual y lo revisamos juntos, pero con este capital el registro observaría la constitución.';
+    return false;
+  }
+  el.className = 'aviso hidden';
+  el.textContent = '';
+  return true;
+}
+
+/* ------------------------------------------------------------ administradores */
+
+function nombreSocio(s, i) {
+  return (s.nombre || '').trim() || ('Socio ' + (i + 1) + ' — sin nombre todavía');
+}
+
+function renderAdmins() {
+  const socios = leerSocios();
+
+  /* Titulares: los checkboxes se recrean, pero el name es fijo por índice
+     (admin_titular_socio_N), así lo marcado sobrevive a que el socio cambie
+     de nombre mientras lo escribe. */
+  const lista = document.getElementById('titularesLista');
+  const estado = {};
+  lista.querySelectorAll('input[type=checkbox]').forEach(cb => { estado[cb.name] = cb.checked; });
+  lista.innerHTML = '';
+
+  if (!socios.length) {
+    const p = document.createElement('p');
+    p.className = 'admin-vacio';
+    p.textContent = 'Cargá primero los socios para poder designar administradores.';
+    lista.appendChild(p);
+  }
+
+  socios.forEach((s, i) => {
+    const n = i + 1;
+    const label = document.createElement('label');
+    label.className = 'check-option';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.name = 'admin_titular_socio_' + n;
+    cb.value = 'Si';
+    cb.addEventListener('change', onAdminChange);
+    const sp = document.createElement('span');
+    sp.textContent = nombreSocio(s, i);
+    label.append(cb, sp);
+    lista.appendChild(label);
+  });
+
+  const labelExt = document.createElement('label');
+  labelExt.className = 'check-option';
+  const cbExt = document.createElement('input');
+  cbExt.type = 'checkbox';
+  cbExt.name = 'admin_titular_externo';
+  cbExt.value = 'Si';
+  cbExt.addEventListener('change', onAdminChange);
+  const spExt = document.createElement('span');
+  spExt.textContent = 'Otra persona que no es socio';
+  labelExt.append(cbExt, spExt);
+  lista.appendChild(labelExt);
+
+  lista.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    if (estado[cb.name] !== undefined) cb.checked = estado[cb.name];
+  });
+
+  // Suplente
+  const sel = document.getElementById('suplenteSelect');
+  const previo = sel.value;
+  sel.innerHTML = '';
+  sel.add(new Option('— seleccionar —', ''));
+  socios.forEach((s, i) => sel.add(new Option(nombreSocio(s, i), 'socio_' + (i + 1))));
+  sel.add(new Option('Otra persona que no es socio', 'externo'));
+  if (Array.from(sel.options).some(o => o.value === previo)) sel.value = previo;
+}
+
+function titularesSeleccionados() {
+  const refs = [];
+  document.querySelectorAll('#titularesLista input[type=checkbox]').forEach(cb => {
+    if (!cb.checked) return;
+    refs.push(cb.name === 'admin_titular_externo' ? 'externo' : 'socio_' + cb.name.replace('admin_titular_socio_', ''));
+  });
+  return refs;
+}
+
+function onAdminChange() {
+  const extTit = document.querySelector('[name="admin_titular_externo"]');
+  document.getElementById('cond_titular_externo').classList.toggle('visible', !!(extTit && extTit.checked));
+  const sup = document.getElementById('suplenteSelect').value;
+  document.getElementById('cond_suplente_externo').classList.toggle('visible', sup === 'externo');
+  validarAdmin();
+  actualizarProgreso();
+  autoguardar();
+}
+
+function validarAdmin() {
+  const el = document.getElementById('avisoAdmin');
+  const titulares = titularesSeleccionados();
+  const sup = document.getElementById('suplenteSelect').value;
+
+  let msg = '';
+  if (!titulares.length) {
+    msg = 'Falta designar al menos un administrador titular.';
+  } else if (!sup) {
+    msg = 'Falta designar el administrador suplente. La designación es obligatoria.';
+  } else if (sup === 'externo' && titulares.includes('externo')) {
+    /* Va antes de la regla general: acá "externo" son dos casilleros distintos y
+       el mensaje genérico ("esa persona ya figura como titular") describiría mal
+       lo que pasa. El formulario solo tiene lugar para una persona no socia. */
+    msg = 'Marcaste “otra persona que no es socio” como titular y también como suplente. El formulario admite una sola persona no socia: si son dos personas distintas, escribinos y las cargamos a mano.';
+  } else if (titulares.includes(sup)) {
+    msg = titulares.length === 1
+      ? 'La misma persona no puede ser titular y suplente. Como hay un único titular, el suplente tiene que ser otra persona.'
+      : 'Esa persona ya figura como administrador titular. El suplente tiene que ser alguien distinto.';
+  }
+
+  if (msg) { el.className = 'aviso error'; el.textContent = msg; return false; }
+  el.className = 'aviso hidden';
+  el.textContent = '';
+  return true;
+}
+
+/* Devuelve los nombres legibles, que es lo que va a la Sheet.
+   La planilla no tiene por qué saber que existió un checkbox. */
+function resolverAdmins() {
+  const socios = leerSocios();
+  const nombreDe = ref => {
+    if (ref === 'externo') {
+      const n = (document.querySelector('[name="admin_tit_ext_nombre"]').value || '').trim();
+      return n || 'Persona no socia (sin nombre)';
+    }
+    const i = parseInt(ref.replace('socio_', ''), 10) - 1;
+    return socios[i] ? nombreSocio(socios[i], i) : '';
+  };
+
+  const titulares = titularesSeleccionados().map(nombreDe).filter(Boolean);
+
+  const supRef = document.getElementById('suplenteSelect').value;
+  let suplente = '';
+  if (supRef === 'externo') {
+    suplente = (document.querySelector('[name="admin_sup_ext_nombre"]').value || '').trim() || 'Persona no socia (sin nombre)';
+  } else if (supRef) {
+    const i = parseInt(supRef.replace('socio_', ''), 10) - 1;
+    suplente = socios[i] ? nombreSocio(socios[i], i) : '';
+  }
+
+  return { titulares: titulares.join('; '), suplente };
+}
+
+/* --------------------------------------------------------------- sede social */
+
+function copiarDomicilioSocio(cb) {
+  if (!cb.checked) return;
+  const s = leerSocios()[0];
+  if (!s) { cb.checked = false; mostrarToast('Cargá primero los datos del primer socio.', 'error'); return; }
+  const mapa = {
+    sede_calle: 'dom_calle', sede_numero: 'dom_numero', sede_piso: 'dom_piso',
+    sede_depto: 'dom_depto', sede_cp: 'dom_cp', sede_localidad: 'dom_localidad',
+    sede_provincia: 'dom_provincia'
+  };
+  Object.entries(mapa).forEach(([destino, origen]) => {
+    const el = document.querySelector('[name="' + destino + '"]');
+    if (el) el.value = s[origen] || '';
+  });
+  actualizarProgreso();
+  autoguardar();
+  mostrarToast('Domicilio copiado. Revisá que sea el correcto para recibir notificaciones.', 'success');
+}
+
+/* ------------------------------------------------------- refresco y progreso */
+
+function refrescarDerivados() {
+  renderAdmins();
+  renderReparto();
+  validarCapital();
+  validarAdmin();
+}
+
+document.addEventListener('input', function(e) {
+  const campo = e.target.dataset ? e.target.dataset.campo : null;
+  if (campo === 'nombre' || campo === 'participacion') refrescarDerivados();
+  if (e.target.id === 'capitalMonto') { renderReparto(); validarCapital(); }
+  actualizarProgreso();
+  autoguardar();
+});
+
+document.addEventListener('change', function(e) {
+  if (e.target.id === 'suplenteSelect') { onAdminChange(); return; }
+  actualizarProgreso();
+  autoguardar();
+});
+
+function toggleSection(btn, event) {
+  event.stopPropagation();
+  const body = document.getElementById(btn.getAttribute('aria-controls'));
+  const toggle = btn.querySelector('.section-toggle');
+  const abierta = body.classList.toggle('hidden') === false;
+  toggle.classList.toggle('open', abierta);
+  btn.setAttribute('aria-expanded', String(abierta));
+}
+
+function actualizarProgreso() {
+  const form = document.getElementById('mainForm');
+  const inputs = form.querySelectorAll('input[type=text],input[type=email],input[type=date],input[type=number],textarea,select');
+  const radios = {};
+  form.querySelectorAll('input[type=radio]').forEach(r => { radios[r.name] = radios[r.name] || r.checked; });
+  let total = 0, filled = 0;
+  inputs.forEach(i => { total++; if (i.value.trim()) filled++; });
+  Object.keys(radios).forEach(k => { total++; if (radios[k]) filled++; });
+  const pct = total > 0 ? Math.round(filled / total * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + ' %';
+}
+
+/* ------------------------------------------------------------- persistencia */
+
+let saveTimer;
+function autoguardar() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => guardarProgreso(true), 2000);
+}
+
+function snapshot() {
+  const data = {};
+  document.getElementById('mainForm').querySelectorAll('input, textarea, select').forEach(el => {
+    if (!el.name) return;
+    if (el.type === 'radio' || el.type === 'checkbox') { if (el.checked) data[el.name] = el.value; }
+    else { if (el.value) data[el.name] = el.value; }
+  });
+  return data;
+}
+
+function guardarProgreso(silencioso) {
+  const data = snapshot();
+  data['__sociosCount'] = sociosCount;
+  localStorage.setItem('lucci_sas_progreso', JSON.stringify(data));
+  document.getElementById('autosaveIndicator').textContent = 'Progreso guardado — ' + new Date().toLocaleTimeString('es-AR');
+  if (!silencioso) mostrarToast('Progreso guardado correctamente', 'success');
+}
+
+function cargarProgreso() {
+  const raw = localStorage.getItem('lucci_sas_progreso');
+  if (!raw) return false;
+  try {
+    const data = JSON.parse(raw);
+    const n = parseInt(data['__sociosCount'] || 0, 10);
+    if (n > 0) {
+      const lista = [];
+      for (let i = 1; i <= n; i++) {
+        const s = {};
+        CAMPOS_SOCIO.forEach(c => { s[c] = data['socio_' + i + '_' + c] || ''; });
+        lista.push(s);
+      }
+      renderSocios(lista);
+    }
+
+    const form = document.getElementById('mainForm');
+    Object.entries(data).forEach(([name, value]) => {
+      if (name === '__sociosCount' || name.startsWith('socio_')) return;
+      const el = form.querySelector('[name="' + name + '"]');
+      if (!el) return;
+      if (el.type === 'radio') {
+        const r = form.querySelector('[name="' + name + '"][value="' + CSS.escape(value) + '"]');
+        if (r) r.checked = true;
+      } else if (el.type === 'checkbox') {
+        el.checked = true;
+      } else {
+        el.value = value;
+      }
+    });
+
+    onAdminChange();
+    refrescarDerivados();
+    actualizarProgreso();
+    /* onAdminChange() encola un autoguardado, y a los 2 s pisaba este mensaje con
+       "Progreso guardado — hh:mm". Restaurar no es guardar: el cliente que vuelve
+       a un formulario largo necesita ver que lo suyo sigue ahí. El próximo tecleo
+       vuelve a encolar el autoguardado normalmente. */
+    clearTimeout(saveTimer);
+    document.getElementById('autosaveIndicator').textContent = 'Progreso recuperado del guardado anterior';
+    return true;
+  } catch (e) { return false; }
+}
+
+function limpiarFormulario() {
+  if (!confirm('¿Confirmar que desea borrar todas las respuestas?')) return;
+  localStorage.removeItem('lucci_sas_progreso');
+  document.getElementById('mainForm').reset();
+  document.querySelectorAll('.conditional').forEach(el => el.classList.remove('visible'));
+  renderSocios([{ nacionalidad: 'Argentina' }, { nacionalidad: 'Argentina' }]);
+  actualizarProgreso();
+  mostrarToast('Formulario limpiado', '');
+}
+
+/* ------------------------------------------------------------------- envío */
+
+function recolectarDatos() {
+  const data = snapshot();
+
+  // Los checkboxes crudos no viajan: la Sheet recibe los nombres resueltos.
+  Object.keys(data).forEach(k => {
+    if (k.startsWith('admin_titular_socio_') || k === 'admin_titular_externo' || k === 'admin_suplente_ref') delete data[k];
+  });
+
+  const admins = resolverAdmins();
+  const socios = leerSocios();
+  data.admin_titulares = admins.titulares;
+  data.admin_suplente = admins.suplente;
+  data.socios_cantidad = String(socios.length);
+  data.participacion_suma = fmtPct(socios.reduce((a, s) => a + parsePct(s.participacion), 0)) + ' %';
+  return data;
+}
+
+const WEBHOOK_URL = 'https://n8n.estudiolucci.com.ar/webhook/sas';
+
+async function generarHash(texto) {
+  const encoder = new TextEncoder();
+  const buffer = await crypto.subtle.digest('SHA-256', encoder.encode(texto));
+  return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function enviarRespuestas() {
+  if (!document.getElementById('conformidadCheck').checked) {
+    mostrarToast('Debés aceptar la declaración de conformidad para enviar.', 'error');
+    return;
+  }
+  if (!document.querySelector('[name="firma_nombre"]').value.trim()) {
+    mostrarToast('Debés completar tu nombre completo para enviar.', 'error');
+    return;
+  }
+  /* Estas dos sí bloquean: un reparto que no cierra en 100 o un suplente que es
+     también titular no se pueden arreglar leyendo la planilla después. */
+  if (!renderReparto()) {
+    mostrarToast('Los porcentajes de los socios tienen que sumar 100. Revisá la sección Capital social.', 'error');
+    document.getElementById('repartoPanel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  if (!validarAdmin()) {
+    mostrarToast('Revisá la designación de administradores antes de enviar.', 'error');
+    document.getElementById('avisoAdmin').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  if (!confirm('Vas a enviar los datos al estudio. ¿Confirmar?')) return;
+
+  const payload = {
+    _formulario: 'Constitución SAS',
+    _fecha_envio: new Date().toISOString(),
+    ...recolectarDatos()
+  };
+  payload._hash = await generarHash(JSON.stringify(payload));
+
+  const btn = document.querySelector('.btn-primary');
+  const textoOriginal = btn.textContent;
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Error ' + res.status);
+    mostrarToast('Datos enviados correctamente', 'success');
+    const ahora = new Date().toLocaleString('es-AR');
+    localStorage.setItem('lucci_sas_enviado', ahora);
+    mostrarEnviado(ahora);
+  } catch (e) {
+    mostrarToast('Error al enviar. Podés descargar el Excel como alternativa.', 'error');
+  } finally {
+    btn.textContent = textoOriginal;
+    btn.disabled = false;
+  }
+}
+
+function mostrarEnviado(fecha) {
+  const el = document.getElementById('enviadoIndicator');
+  el.textContent = 'Enviado al estudio el ' + fecha;
+  el.style.display = 'block';
+}
+
+/* ------------------------------------------------------------------- export */
+
+function exportarXLSX() {
+  const data = recolectarDatos();
+  const socios = leerSocios();
+
+  const rows = [['Campo', 'Respuesta']];
+  const push = (l, v) => rows.push([l, v || '']);
+
+  rows.push(['LA SOCIEDAD', '']);
+  push('Denominación — 1ª opción', data.soc_denominacion_1);
+  push('Denominación — 2ª opción', data.soc_denominacion_2);
+  push('Denominación — 3ª opción', data.soc_denominacion_3);
+  push('Actividad principal', data.soc_objeto);
+  push('Jurisdicción de inscripción', data.soc_jurisdiccion);
+
+  const etiquetas = {
+    nombre: 'Apellido y nombres', cuit: 'CUIT / CUIL', dni: 'DNI',
+    fecha_nac: 'Fecha de nacimiento', estado_civil: 'Estado civil', conyuge: 'Cónyuge',
+    nacionalidad: 'Nacionalidad', profesion: 'Profesión u ocupación',
+    dom_calle: 'Domicilio — calle', dom_numero: 'Domicilio — número',
+    dom_piso: 'Domicilio — piso', dom_depto: 'Domicilio — depto',
+    dom_cp: 'Domicilio — CP', dom_localidad: 'Domicilio — localidad',
+    dom_provincia: 'Domicilio — provincia', email: 'E-mail', celular: 'Teléfono celular',
+    participacion: 'Porcentaje del capital'
+  };
+  socios.forEach((s, i) => {
+    rows.push(['SOCIO ' + (i + 1), (s.nombre || '').trim()]);
+    CAMPOS_SOCIO.forEach(c => {
+      if (c === 'conyuge' && s.estado_civil !== 'Casado/a') return;
+      push(etiquetas[c], s[c]);
+    });
+  });
+
+  rows.push(['CAPITAL SOCIAL', '']);
+  push('Monto del capital', data.capital_monto);
+  push('Suma de participaciones', data.participacion_suma);
+  push('Mínimo legal de referencia', fmtMoneda.format(CAPITAL_MINIMO.monto) + ' (' + CAPITAL_MINIMO.referencia + ', a ' + CAPITAL_MINIMO.vigencia + ')');
+
+  rows.push(['ADMINISTRADORES', '']);
+  push('Titular/es', data.admin_titulares);
+  push('Suplente', data.admin_suplente);
+  ['nombre','cuit','dni','fecha_nac','estado_civil','nacionalidad','profesion','domicilio','email','celular'].forEach(c => {
+    if (data['admin_tit_ext_' + c]) push('Titular no socio — ' + c, data['admin_tit_ext_' + c]);
+    if (data['admin_sup_ext_' + c]) push('Suplente no socio — ' + c, data['admin_sup_ext_' + c]);
+  });
+
+  rows.push(['SEDE SOCIAL', '']);
+  push('Calle', data.sede_calle);
+  push('Número', data.sede_numero);
+  push('Piso', data.sede_piso);
+  push('Departamento', data.sede_depto);
+  push('Código postal', data.sede_cp);
+  push('Localidad', data.sede_localidad);
+  push('Provincia', data.sede_provincia);
+
+  rows.push(['CIERRE DE EJERCICIO', '']);
+  push('Fecha de cierre', data.cierre_ejercicio);
+
+  rows.push(['OTROS', '']);
+  push('Observaciones', data.observaciones);
+  push('Firmante', data.firma_nombre);
+  push('Fecha de firma', data.firma_fecha);
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{ wch: 45 }, { wch: 80 }];
+  XLSX.utils.book_append_sheet(wb, ws, 'SAS');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
+    ['Estudio', 'Lucci & Asociados'],
+    ['Formulario', 'Constitución de SAS'],
+    ['Exportado', new Date().toLocaleString('es-AR')]
+  ]), 'Info');
+
+  const base = (data.soc_denominacion_1 || 'SAS').replace(/[^\wáéíóúñÁÉÍÓÚÑ ]/g, '').trim().replace(/\s+/g, '_');
+  XLSX.writeFile(wb, 'SAS_' + (base || 'constitucion') + '.xlsx');
+  mostrarToast('Archivo descargado correctamente', 'success');
+}
+
+function mostrarToast(msg, tipo) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (tipo || '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+/* --------------------------------------------------------------------- init */
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('firmaFecha').value = new Date().toLocaleDateString('es-AR');
+  poblarProvincias(document.getElementById('sedeProvincia'));
+  renderNotaCapital();
+  document.getElementById('capitalMonto').addEventListener('input', function() { mascaraMonto(this); });
+
+  // Dos socios es el caso más común de una SAS; con uno solo se elimina el segundo.
+  if (!cargarProgreso()) renderSocios([{ nacionalidad: 'Argentina' }, { nacionalidad: 'Argentina' }]);
+
+  actualizarProgreso();
+  const enviado = localStorage.getItem('lucci_sas_enviado');
+  if (enviado) mostrarEnviado(enviado);
+});
+
+</script>
+</body>
+</html>
